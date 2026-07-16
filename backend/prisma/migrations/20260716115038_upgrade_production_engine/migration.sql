@@ -1,0 +1,36 @@
+-- AlterTable
+ALTER TABLE "public"."ProductionBatch" ADD COLUMN     "actualDoughCount" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "doughRestTime" INTEGER NOT NULL DEFAULT 60,
+ADD COLUMN     "efficiency" DOUBLE PRECISION NOT NULL DEFAULT 0,
+ADD COLUMN     "expectedDoughCount" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "targetDoughWeight" DOUBLE PRECISION NOT NULL DEFAULT 0.85,
+ADD COLUMN     "temperature" DOUBLE PRECISION NOT NULL DEFAULT 0,
+ADD COLUMN     "wasteWeight" DOUBLE PRECISION NOT NULL DEFAULT 0;
+
+-- CreateTable
+CREATE TABLE "public"."DailySale" (
+    "id" TEXT NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "breadType" TEXT NOT NULL,
+    "quantity" INTEGER NOT NULL,
+    "pricePerBread" DOUBLE PRECISION NOT NULL,
+    "totalAmount" DOUBLE PRECISION NOT NULL,
+    "note" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "DailySale_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "public"."ProfitReport" (
+    "id" TEXT NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "salesAmount" DOUBLE PRECISION NOT NULL,
+    "productionCost" DOUBLE PRECISION NOT NULL,
+    "expenseAmount" DOUBLE PRECISION NOT NULL,
+    "salaryAmount" DOUBLE PRECISION NOT NULL,
+    "netProfit" DOUBLE PRECISION NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "ProfitReport_pkey" PRIMARY KEY ("id")
+);

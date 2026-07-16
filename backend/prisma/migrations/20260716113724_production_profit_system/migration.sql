@@ -1,0 +1,32 @@
+-- CreateTable
+CREATE TABLE "public"."ProductionCost" (
+    "id" TEXT NOT NULL,
+    "productionId" TEXT NOT NULL,
+    "flourKg" DOUBLE PRECISION NOT NULL,
+    "waterLiter" DOUBLE PRECISION NOT NULL,
+    "doughCount" INTEGER NOT NULL,
+    "breadCount" INTEGER NOT NULL,
+    "breadWeight" DOUBLE PRECISION NOT NULL,
+    "flourCost" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "waterCost" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "energyCost" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "laborCost" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "totalCost" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "ProductionCost_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "public"."DailyProfit" (
+    "id" TEXT NOT NULL,
+    "date" TEXT NOT NULL,
+    "income" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "productionCost" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "expense" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "salary" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "profit" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "DailyProfit_pkey" PRIMARY KEY ("id")
+);
