@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  phone     String   @unique
+  password  String
+  role      String   @default("EMPLOYEE")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id        String    @id @default(uuid())
+  name      String
+  products  Product[]
+  createdAt DateTime  @default(now())
+}
+
+model Product {
+  id         String     @id @default(uuid())
+  name       String
+  price      Float
+  stock      Float      @default(0)
+  categoryId String
+  category   Category   @relation(fields: [categoryId], references: [id])
+  saleItems  SaleItem[]
+  createdAt  DateTime   @default(now())
+}
+
+model Ingredient {
+  id        String   @id @default(uuid())
+  name      String
+  unit      String
+  quantity  Float    @default(0)
+  createdAt DateTime @default(now())
+}
+
+model Sale {
+  id        String     @id @default(uuid())
+  total     Float
+  items     SaleItem[]
+  createdAt DateTime   @default(now())
+}
+
+model SaleItem {
+  id        String  @id @default(uuid())
+  saleId    String
+  productId String
+  quantity  Float
+  price     Float
+  sale      Sale    @relation(fields: [saleId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Expense {
+  id        String   @id @default(uuid())
+  title     String
+  amount    Float
+  createdAt DateTime @default(now())
+}
+
+model CashBox {
+  id        String   @id @default(uuid())
+  balance   Float    @default(0)
+  createdAt DateTime @default(now())
+}
+
+model AIAnalysis {
+  id        String   @id @default(uuid())
+  type      String
+  result    String
+  createdAt DateTime @default(now())
+}
