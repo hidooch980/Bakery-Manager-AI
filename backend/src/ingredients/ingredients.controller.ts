@@ -1,3 +1,4 @@
+import { CreateIngredientDto } from './dto/create-ingredient.dto';
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -19,7 +20,7 @@ export class IngredientsController {
 
 
   @Post()
-  create(@Body() data:any) {
+  create(@Body() data:CreateIngredientDto) {
     return this.prisma.ingredient.create({
       data
     });

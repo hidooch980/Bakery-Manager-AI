@@ -11,7 +11,7 @@ export class ProductsService {
     });
   }
 
-  create(data:any) {
+  create(data:any){ if(!data) data={};
     return this.prisma.product.create({data});
   }
 }

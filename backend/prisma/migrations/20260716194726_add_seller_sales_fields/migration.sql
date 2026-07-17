@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "public"."Sale" ADD COLUMN     "cardAmount" DOUBLE PRECISION NOT NULL DEFAULT 0,
+ADD COLUMN     "cashAmount" DOUBLE PRECISION NOT NULL DEFAULT 0,
+ADD COLUMN     "employeeId" TEXT,
+ADD COLUMN     "shift" TEXT;

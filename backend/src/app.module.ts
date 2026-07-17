@@ -1,3 +1,14 @@
+import { UnitConversionModule } from './unit-conversion/unit-conversion.module';
+import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
+import { AiAdvisorModule } from './ai-advisor/ai-advisor.module';
+import { DailyReportModule } from './daily-report/daily-report.module';
+import { ProductionSalesControlModule } from './production-sales-control/production-sales-control.module';
+import { SellerShiftModule } from './seller-shift/seller-shift.module';
+import { NaninoModule } from './nanino/nanino.module';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { SalesProfitModule } from './sales-profit/sales-profit.module';
+import { ProfitDashboardModule } from './profit-dashboard/profit-dashboard.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -16,15 +27,15 @@ import { InventoryAiModule } from './inventory-ai/inventory-ai.module';
 import { EmployeesModule } from './employees/employees.module';
 import { FinancialModule } from './financial/financial.module';
 import { CostAnalysisModule } from './cost-analysis/cost-analysis.module';
-import { SalesProfitModule } from './sales-profit/sales-profit.module';
-import { DashboardModule } from './dashboard/dashboard.module';
 import { ProductionAiModule } from './production-ai/production-ai.module';
 import { BakerySettingsModule } from './bakery-settings/bakery-settings.module';
 import { FlourControlModule } from './flour-control/flour-control.module';
+import { FlourPurchaseModule } from './flour-purchase/flour-purchase.module';
+import { ProductionCostModule } from './production-cost/production-cost.module';
+import { BranchModule } from './branch/branch.module';
 
 @Module({
-  imports: [PrismaModule, ProductsModule, InventoryModule, MaterialsModule, ProductionModule, IngredientsModule, CashboxModule, ExpensesModule, SalesModule, ReportsModule, AiModule, InventoryAiModule, EmployeesModule, FinancialModule, CostAnalysisModule, SalesProfitModule, DashboardModule, ProductionAiModule, BakerySettingsModule, FlourControlModule],
-  controllers: [AppController],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), AuthModule, NaninoModule, DashboardModule, SalesProfitModule,PrismaModule, ProductsModule, InventoryModule, MaterialsModule, ProductionModule, IngredientsModule, CashboxModule, ExpensesModule, SalesModule, ReportsModule, AiModule, InventoryAiModule, EmployeesModule, FinancialModule, CostAnalysisModule, SalesProfitModule, DashboardModule, ProductionAiModule, BakerySettingsModule, FlourControlModule, FlourPurchaseModule, ProductionCostModule, ProfitDashboardModule, SellerShiftModule, ProductionSalesControlModule, AiAdvisorModule, DailyReportModule, BranchModule, UnitConversionModule],
   providers: [AppService],
 })
 export class AppModule {}

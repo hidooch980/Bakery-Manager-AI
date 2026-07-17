@@ -20,6 +20,11 @@ export class EmployeesController {
     return this.service.findOne(id);
   }
 
+  @Get(':id/performance')
+  performance(@Param('id') id:string){
+    return this.service.performance(id);
+  }
+
   @Post('salary')
   salary(@Body() data:any){
     return this.service.addSalary(data);

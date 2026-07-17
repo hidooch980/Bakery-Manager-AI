@@ -8,14 +8,18 @@ datasource db {
 }
 
 model User {
-  id           String                 @id @default(uuid())
-  name         String
-  phone        String                 @unique
-  password     String
-  role         String                 @default("EMPLOYEE")
-  createdAt    DateTime               @default(now())
-  updatedAt    DateTime               @updatedAt
-  transactions InventoryTransaction[]
+  id            String                 @id @default(uuid())
+  name          String
+  phone         String                 @unique
+  password      String
+  role          String                 @default("EMPLOYEE")
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @updatedAt
+  branchId      String?
+  transactions  InventoryTransaction[]
+  refreshTokens RefreshToken[]
+
+  branch Branch? @relation(fields: [branchId], references: [id])
 }
 
 model Category {
@@ -37,20 +41,30 @@ model Product {
 }
 
 model Ingredient {
-  id           String                 @id @default(uuid())
-  name         String
-  unit         String
-  quantity     Float                  @default(0)
-  createdAt    DateTime               @default(now())
-  minStock     Float                  @default(0)
-  transactions InventoryTransaction[]
+  id            String                 @id @default(uuid())
+  name          String
+  unit          String
+  quantity      Float                  @default(0)
+  createdAt     DateTime               @default(now())
+  minStock      Float                  @default(0)
+  bagQuantity Float                  @default(0)
+  bagWeight   Float                  @default(50)
+  branchId      String?
+  branch        Branch?                @relation(fields: [branchId], references: [id])
+  transactions  InventoryTransaction[]
+  refreshTokens RefreshToken[]
+  conversions   UnitConversion[]
 }
 
 model Sale {
-  id        String     @id @default(uuid())
-  total     Float
-  createdAt DateTime   @default(now())
-  items     SaleItem[]
+  id         String     @id @default(uuid())
+  total      Float
+  createdAt  DateTime   @default(now())
+  cardAmount Float      @default(0)
+  cashAmount Float      @default(0)
+  employeeId String?
+  shift      String?
+  items      SaleItem[]
 }
 
 model SaleItem {
@@ -64,30 +78,39 @@ model SaleItem {
 }
 
 model Expense {
-  id           String                 @id @default(uuid())
-  title        String
-  amount       Float
-  createdAt    DateTime               @default(now())
-  category     String?
-  month        String?
-  note         String?
-  paid         Boolean                @default(false)
-  transactions InventoryTransaction[]
+  id            String                 @id @default(uuid())
+  title         String
+  amount        Float
+  createdAt     DateTime               @default(now())
+  category      String?
+  month         String?
+  note          String?
+  paid          Boolean                @default(false)
+  branchId      String?
+  branch        Branch?                @relation(fields: [branchId], references: [id])
+  transactions  InventoryTransaction[]
+  refreshTokens RefreshToken[]
 }
 
 model CashBox {
-  id           String                 @id @default(uuid())
-  balance      Float                  @default(0)
-  createdAt    DateTime               @default(now())
-  transactions InventoryTransaction[]
+  id            String                 @id @default(uuid())
+  balance       Float                  @default(0)
+  createdAt     DateTime               @default(now())
+  branchId      String?
+  branch        Branch?                @relation(fields: [branchId], references: [id])
+  transactions  InventoryTransaction[]
+  refreshTokens RefreshToken[]
 }
 
 model AIAnalysis {
-  id           String                 @id @default(uuid())
-  type         String
-  result       String
-  createdAt    DateTime               @default(now())
-  transactions InventoryTransaction[]
+  id            String                 @id @default(uuid())
+  type          String
+  result        String
+  createdAt     DateTime               @default(now())
+  branchId      String?
+  branch        Branch?                @relation(fields: [branchId], references: [id])
+  transactions  InventoryTransaction[]
+  refreshTokens RefreshToken[]
 }
 
 model InventoryTransaction {
@@ -102,6 +125,8 @@ model InventoryTransaction {
   cashBoxId    String?
   aIAnalysisId String?
   minStock     Float       @default(0)
+  bagQuantity Float                  @default(0)
+  bagWeight   Float                  @default(50)
   aianalysis   AIAnalysis? @relation(fields: [aIAnalysisId], references: [id])
   cashBox      CashBox?    @relation(fields: [cashBoxId], references: [id])
   expense      Expense?    @relation(fields: [expenseId], references: [id])
@@ -128,19 +153,23 @@ model ProductionBatch {
   targetDoughWeight  Float    @default(0.85)
   temperature        Float    @default(0)
   wasteWeight        Float    @default(0)
+  doughWeight Float @default(0)
+  soldBreadCount Int @default(0)
+  shortage Int @default(0)
 }
 
 model Employee {
-  id         String    @id @default(uuid())
-  name       String
-  role       String
-  phone      String?
-  salaryBase Float
-  active     Boolean   @default(true)
-  createdAt  DateTime  @default(now())
-  advances   Advance[]
-  debts      Debt[]
-  salaries   Salary[]
+  id                String             @id @default(uuid())
+  name              String
+  role              String
+  phone             String?
+  salaryBase        Float
+  active            Boolean            @default(true)
+  createdAt         DateTime           @default(now())
+  advances          Advance[]
+  debts             Debt[]
+  naninoComparisons NaninoComparison[]
+  salaries          Salary[]
 }
 
 model Salary {
@@ -232,4 +261,163 @@ model ProfitReport {
   salaryAmount   Float
   netProfit      Float
   createdAt      DateTime @default(now())
+}
+
+model BakerySetting {
+  id                   String   @id @default(uuid())
+  bakeryName           String
+  breadType            String?
+  sellingDoughWeight   Float    @default(0.85)
+  naninoDoughWeight    Float    @default(0.85)
+  breadPrice           Float    @default(0)
+  dailyCapacity        Int      @default(0)
+  standardWastePercent Float    @default(0)
+  workingStartTime     String?
+  workingEndTime       String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+model DoughWeightControl {
+  id           String   @id @default(uuid())
+  date         DateTime @default(now())
+  sellerWeight Float
+  naninoWeight Float
+  difference   Float
+  breadCount   Int      @default(0)
+  note         String?
+  createdAt    DateTime @default(now())
+}
+
+model FlourInventory {
+  id                  String   @id @default(uuid())
+  date                DateTime @default(now())
+  openingStockBags    Float    @default(0)
+  factoryReceivedBags Float    @default(0)
+  purchasedBags       Float    @default(0)
+  consumedBags        Float    @default(0)
+  closingStockBags    Float    @default(0)
+  bagWeight           Float    @default(40)
+  costPerBag          Float    @default(0)
+  transportCost       Float    @default(0)
+  unloadingCost       Float    @default(0)
+  note                String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model ProfitDashboard {
+  id         String   @id @default(uuid())
+  totalSales Float
+  totalCost  Float
+  profit     Float
+  createdAt  DateTime @default(now())
+}
+
+model NaninoComparison {
+  id                String    @id @default(uuid())
+  date              DateTime  @default(now())
+  period            String
+  employeeId        String?
+  sellingDoughCount Int       @default(0)
+  naninoDoughCount  Int       @default(0)
+  difference        Int       @default(0)
+  sellingWeight     Float     @default(0)
+  naninoWeight      Float     @default(0)
+  weightDifference  Float     @default(0)
+  note              String?
+  Employee          Employee? @relation(fields: [employeeId], references: [id])
+}
+
+model SellerShift {
+  active Boolean @default(true)
+  receivedBread Int @default(0)
+  breadLoan Int @default(0)
+  shortageAmount Float @default(0)
+  closingNote String?
+  settled Boolean @default(false)
+  soldBread Int @default(0)
+  shortage Int @default(0)
+  totalDebt Float @default(0)
+  id             String    @id @default(uuid())
+  employeeId     String
+  startTime      DateTime  @default(now())
+  endTime        DateTime?
+  breadReceived  Int       @default(0)
+  cashDelivered  Float     @default(0)
+  cardDelivered  Float     @default(0)
+  expectedAmount Float     @default(0)
+  difference     Float     @default(0)
+  note           String?
+  createdAt      DateTime  @default(now())
+}
+
+model RefreshToken {
+  id           String      @id @default(uuid())
+  token        String
+  userId       String
+  deviceId     String?
+  expiresAt    DateTime
+  createdAt    DateTime    @default(now())
+  ingredientId String?
+  expenseId    String?
+  cashBoxId    String?
+  aIAnalysisId String?
+  aianalysis   AIAnalysis? @relation(fields: [aIAnalysisId], references: [id])
+  cashBox      CashBox?    @relation(fields: [cashBoxId], references: [id])
+  expense      Expense?    @relation(fields: [expenseId], references: [id])
+  ingredient   Ingredient? @relation(fields: [ingredientId], references: [id])
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Branch {
+  id          String       @id @default(uuid())
+  name        String
+  address     String?
+  phone       String?
+  active      Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  aianalyses  AIAnalysis[]
+  cashBoxes   CashBox[]
+  expenses    Expense[]
+  ingredients Ingredient[]
+  users       User[]
+}
+
+model UnitConversion {
+  id               String   @id @default(uuid())
+  ingredientId     String
+  purchaseUnit     String
+  baseUnit         String
+  conversionFactor Float
+  createdAt        DateTime @default(now())
+
+  ingredient Ingredient @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
+}
+
+model BreadLoan {
+  id          String   @id @default(uuid())
+  personName  String
+  breadCount  Int
+  breadPrice  Float
+  totalAmount Float
+  status      String   @default("OPEN")
+  loanDate    DateTime @default(now())
+  returnDate  DateTime?
+  returned    Int      @default(0)
+  note        String?
+}
+
+model NaninoPeriodControl {
+  id String @id @default(uuid())
+  periodStart DateTime
+  periodEnd DateTime
+  systemFlourBags Int @default(0)
+  naninoFlourBags Int @default(0)
+  difference Int @default(0)
+  status String @default("OK")
+  warning Boolean @default(false)
+  note String?
+  createdAt DateTime @default(now())
 }
