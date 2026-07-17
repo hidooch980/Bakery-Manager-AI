@@ -3,54 +3,33 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class DashboardService {
-  constructor(private prisma: PrismaService) {}
+constructor(private prisma:PrismaService){}
 
-  async getDashboard() {
-    const sales = await this.prisma.dailySale.aggregate({
-      _sum: { totalAmount: true }
-    });
+async getDashboard(){
+const sales=await this.prisma.sale.aggregate({_sum:{total:true}});
+const expenses=await this.prisma.expense.aggregate({_sum:{amount:true}});
+const production=await this.prisma.productionBatch.aggregate({_sum:{breadCount:true}});
+return {sales:sales._sum.total??0,expenses:expenses._sum.amount??0,production:production._sum.breadCount??0,profit:(sales._sum.total??0)-(expenses._sum.amount??0)};
+}
 
-    const expenses = await this.prisma.expense.aggregate({
-      _sum: { amount: true }
-    });
+async getDailyReport(){
+const d=new Date(); d.setHours(0,0,0,0);
+const n=new Date(d); n.setDate(n.getDate()+1);
+const sales=await this.prisma.sale.aggregate({where:{createdAt:{gte:d,lt:n}},_sum:{total:true}});
+const expenses=await this.prisma.expense.aggregate({where:{createdAt:{gte:d,lt:n}},_sum:{amount:true}});
+const production=await this.prisma.productionBatch.aggregate({where:{createdAt:{gte:d,lt:n}},_sum:{breadCount:true}});
+return {date:d,production:production._sum.breadCount??0,sales:sales._sum.total??0,expenses:expenses._sum.amount??0,profit:(sales._sum.total??0)-(expenses._sum.amount??0)};
+}
 
-    const nanino = await this.prisma.naninoComparison.findMany({ orderBy: { date: 'desc' }, take: 10 });
-
-    const production = await this.prisma.productionBatch.aggregate({
-      _sum: {
-        breadCount: true,
-        doughCount: true,
-        actualDoughCount: true,
-        wasteWeight: true,
-        totalSale: true
-      }
-    });
-
-    const totalSales = Number(sales._sum?.totalAmount || 0);
-    const totalExpenses = Number(expenses._sum?.amount || 0);
-
-    return {
-      status: 'ok',
-      module: 'dashboard',
-      data: {
-        finance: {
-          totalSales,
-          totalExpenses,
-          profit: totalSales - totalExpenses
-        },
-        production: {
-          breadCount: production._sum?.breadCount || 0,
-          doughCount: production._sum?.doughCount || 0,
-          actualDoughCount: production._sum?.actualDoughCount || 0,
-          wasteWeight: production._sum?.wasteWeight || 0,
-          productionSale: production._sum?.totalSale || 0
-        },
-        nanino: {
-          records: nanino,
-          totalDifference: nanino.reduce((sum, x) => sum + x.difference, 0),
-          totalWeightDifference: nanino.reduce((sum, x) => sum + x.weightDifference, 0)
-        }
-      }
-    };
-  }
+async getWeeklyReport(){
+const days:any[]=[];
+for(let i=6;i>=0;i--){
+const d=new Date(); d.setDate(d.getDate()-i);
+const n=new Date(d); n.setDate(n.getDate()+1);
+const sales=await this.prisma.sale.aggregate({where:{createdAt:{gte:d,lt:n}},_sum:{total:true}});
+const production=await this.prisma.productionBatch.aggregate({where:{createdAt:{gte:d,lt:n}},_sum:{breadCount:true}});
+days.push({date:d.toISOString().substring(0,10),sales:sales._sum.total??0,production:production._sum.breadCount??0});
+}
+return days;
+}
 }

@@ -33,9 +33,15 @@ import { FlourControlModule } from './flour-control/flour-control.module';
 import { FlourPurchaseModule } from './flour-purchase/flour-purchase.module';
 import { ProductionCostModule } from './production-cost/production-cost.module';
 import { BranchModule } from './branch/branch.module';
+import { FinancialReportModule } from './financial-report/financial-report.module';
+import { DailySaleModule } from './daily-sale/daily-sale.module';
+import { SellerDebtModule } from './seller-debt/seller-debt.module';
+import { NotificationModule } from './notification/notification.module';
+import { BreadTypeModule } from './bread-type/bread-type.module';
+import { ProductionBalanceModule } from './production-balance/production-balance.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), AuthModule, NaninoModule, DashboardModule, SalesProfitModule,PrismaModule, ProductsModule, InventoryModule, MaterialsModule, ProductionModule, IngredientsModule, CashboxModule, ExpensesModule, SalesModule, ReportsModule, AiModule, InventoryAiModule, EmployeesModule, FinancialModule, CostAnalysisModule, SalesProfitModule, DashboardModule, ProductionAiModule, BakerySettingsModule, FlourControlModule, FlourPurchaseModule, ProductionCostModule, ProfitDashboardModule, SellerShiftModule, ProductionSalesControlModule, AiAdvisorModule, DailyReportModule, BranchModule, UnitConversionModule],
+  imports: [ProductionBalanceModule, ConfigModule.forRoot({ isGlobal: true }), AuthModule, NaninoModule, DashboardModule, SalesProfitModule,PrismaModule, ProductsModule, InventoryModule, MaterialsModule, ProductionModule, IngredientsModule, CashboxModule, ExpensesModule, SalesModule, ReportsModule, AiModule, InventoryAiModule, EmployeesModule, FinancialModule, CostAnalysisModule, SalesProfitModule, DashboardModule, ProductionAiModule, BakerySettingsModule, FlourControlModule, FlourPurchaseModule, ProductionCostModule, ProfitDashboardModule, SellerShiftModule, ProductionSalesControlModule, AiAdvisorModule, DailyReportModule, BranchModule, UnitConversionModule, FinancialReportModule, DailySaleModule, SellerDebtModule, NotificationModule, BreadTypeModule, ProductionBalanceModule],
   providers: [AppService],
 })
 export class AppModule {}

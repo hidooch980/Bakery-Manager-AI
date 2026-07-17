@@ -21,6 +21,14 @@ export class DailyReportService {
       }
     });
 
+    const sellerDebt = await this.prisma.sellerDebt.aggregate({
+      _sum:{
+        amount:true,
+        paidAmount:true
+      },
+      where:{ status:'OPEN' }
+    });
+
     const production = await this.prisma.productionBatch.aggregate({
       _sum:{
         breadCount:true,
@@ -41,6 +49,11 @@ export class DailyReportService {
         card:sales._sum.cardAmount || 0
       },
       expenses:expenses._sum.amount || 0,
+                sellerDebt:{
+                  total:sellerDebt._sum.amount || 0,
+                  paid:sellerDebt._sum.paidAmount || 0,
+                  open:(sellerDebt._sum.amount || 0) - (sellerDebt._sum.paidAmount || 0)
+                },
       profit:
         (sales._sum.total || 0) -
         (expenses._sum.amount || 0)

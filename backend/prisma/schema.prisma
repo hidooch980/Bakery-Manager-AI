@@ -47,8 +47,8 @@ model Ingredient {
   quantity      Float                  @default(0)
   createdAt     DateTime               @default(now())
   minStock      Float                  @default(0)
-  bagQuantity Float                  @default(0)
-  bagWeight   Float                  @default(50)
+  bagQuantity   Float                  @default(0)
+  bagWeight     Float                  @default(50)
   branchId      String?
   branch        Branch?                @relation(fields: [branchId], references: [id])
   transactions  InventoryTransaction[]
@@ -125,8 +125,8 @@ model InventoryTransaction {
   cashBoxId    String?
   aIAnalysisId String?
   minStock     Float       @default(0)
-  bagQuantity Float                  @default(0)
-  bagWeight   Float                  @default(50)
+  bagQuantity  Float       @default(0)
+  bagWeight    Float       @default(50)
   aianalysis   AIAnalysis? @relation(fields: [aIAnalysisId], references: [id])
   cashBox      CashBox?    @relation(fields: [cashBoxId], references: [id])
   expense      Expense?    @relation(fields: [expenseId], references: [id])
@@ -153,9 +153,27 @@ model ProductionBatch {
   targetDoughWeight  Float    @default(0.85)
   temperature        Float    @default(0)
   wasteWeight        Float    @default(0)
-  doughWeight Float @default(0)
-  soldBreadCount Int @default(0)
-  shortage Int @default(0)
+  doughWeight        Float    @default(0)
+  soldBreadCount     Int      @default(0)
+  shortage           Int      @default(0)
+}
+
+model BreadType {
+  id           String   @id @default(uuid())
+  name         String
+  active       Boolean  @default(true)
+  saleWeight   Float
+  naninoWeight Float
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model BakerySettings {
+  id            String   @id @default(uuid())
+  saleWeights   Json
+  naninoWeights Json
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Employee {
@@ -163,13 +181,14 @@ model Employee {
   name              String
   role              String
   phone             String?
-  salaryBase        Float
+  salaryBase        Float              @default(0)
   active            Boolean            @default(true)
   createdAt         DateTime           @default(now())
   advances          Advance[]
   debts             Debt[]
   naninoComparisons NaninoComparison[]
   salaries          Salary[]
+  sellerDebts       SellerDebt[]
 }
 
 model Salary {
@@ -263,6 +282,18 @@ model ProfitReport {
   createdAt      DateTime @default(now())
 }
 
+model ProductionBalance {
+  id                String   @id @default(uuid())
+  flourUsed         Float
+  breadType         String
+  saleCount         Int
+  saleWeight        Float
+  naninoWeight      Float
+  naninoConsumption Float
+  balance           Float
+  createdAt         DateTime @default(now())
+}
+
 model BakerySetting {
   id                   String   @id @default(uuid())
   bakeryName           String
@@ -330,15 +361,15 @@ model NaninoComparison {
 }
 
 model SellerShift {
-  active Boolean @default(true)
-  receivedBread Int @default(0)
-  breadLoan Int @default(0)
-  shortageAmount Float @default(0)
-  closingNote String?
-  settled Boolean @default(false)
-  soldBread Int @default(0)
-  shortage Int @default(0)
-  totalDebt Float @default(0)
+  active         Boolean   @default(true)
+  receivedBread  Int       @default(0)
+  breadLoan      Int       @default(0)
+  shortageAmount Float     @default(0)
+  closingNote    String?
+  settled        Boolean   @default(false)
+  soldBread      Int       @default(0)
+  shortage       Int       @default(0)
+  totalDebt      Float     @default(0)
   id             String    @id @default(uuid())
   employeeId     String
   startTime      DateTime  @default(now())
@@ -397,27 +428,48 @@ model UnitConversion {
 }
 
 model BreadLoan {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   personName  String
   breadCount  Int
   breadPrice  Float
   totalAmount Float
-  status      String   @default("OPEN")
-  loanDate    DateTime @default(now())
+  status      String    @default("OPEN")
+  loanDate    DateTime  @default(now())
   returnDate  DateTime?
-  returned    Int      @default(0)
+  returned    Int       @default(0)
   note        String?
 }
 
 model NaninoPeriodControl {
+  id              String   @id @default(uuid())
+  periodStart     DateTime
+  periodEnd       DateTime
+  systemFlourBags Int      @default(0)
+  naninoFlourBags Int      @default(0)
+  difference      Int      @default(0)
+  status          String   @default("OK")
+  warning         Boolean  @default(false)
+  note            String?
+  createdAt       DateTime @default(now())
+}
+
+model SellerDebt {
   id String @id @default(uuid())
-  periodStart DateTime
-  periodEnd DateTime
-  systemFlourBags Int @default(0)
-  naninoFlourBags Int @default(0)
-  difference Int @default(0)
-  status String @default("OK")
-  warning Boolean @default(false)
+
+  sellerId String
+  seller   Employee @relation(fields: [sellerId], references: [id])
+
+  title      String
+  amount     Float
+  paidAmount Float  @default(0)
+
+  status String @default("OPEN")
+
   note String?
-  createdAt DateTime @default(now())
+
+  createdAt DateTime  @default(now())
+  paidAt    DateTime?
+
+  approvedBy String?
+  approvedAt DateTime?
 }

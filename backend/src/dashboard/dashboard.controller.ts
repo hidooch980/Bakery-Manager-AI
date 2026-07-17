@@ -3,12 +3,24 @@ import { DashboardService } from './dashboard.service';
 
 @Controller('dashboard')
 export class DashboardController {
-  constructor(
-    private readonly dashboardService: DashboardService,
-  ) {}
 
-  @Get()
-  getDashboard() {
-    return this.dashboardService.getDashboard();
-  }
+constructor(
+private dashboardService: DashboardService
+){}
+
+@Get()
+getDashboard(){
+return this.dashboardService.getDashboard();
+}
+
+@Get('daily')
+getDailyReport(){
+return this.dashboardService.getDailyReport();
+}
+
+@Get('weekly')
+getWeeklyReport(){
+return this.dashboardService.getWeeklyReport();
+}
+
 }
