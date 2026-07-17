@@ -473,3 +473,14 @@ model SellerDebt {
   approvedBy String?
   approvedAt DateTime?
 }
+
+model AppVersion {
+  id          String   @id @default(uuid())
+  version     String
+  buildNumber Int
+  forceUpdate Boolean  @default(true)
+  message     String?
+  downloadUrl String?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
