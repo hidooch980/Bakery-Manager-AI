@@ -18,4 +18,5 @@ class SalesService {
   static List<Map<String, dynamic>> getAll() {
     return records;
   }
+static Future createSale(Map data) async { return true; }
 }

@@ -20,7 +20,7 @@ class DailyChart extends StatelessWidget {
           padding:const EdgeInsets.all(16),
           child:BarChart(
             BarChartData(
-              titlesData:FlTitlesSideTitlesData(),
+              titlesData:FlTitlesData(),
               barGroups:[
                 BarChartGroupData(
                   x:0,

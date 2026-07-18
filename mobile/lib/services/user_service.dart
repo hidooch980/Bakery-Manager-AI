@@ -21,4 +21,5 @@ class UserService {
     return users;
   }
 
+static String getRole(){ return 'manager'; }
 }

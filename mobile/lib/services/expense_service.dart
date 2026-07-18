@@ -1,4 +1,4 @@
-class ExpenseService {
+class ExpenseServicee {
   static final List<Map<String, dynamic>> records = [];
 
   static void save({
@@ -15,4 +15,5 @@ class ExpenseService {
   static List<Map<String, dynamic>> getAll() {
     return records;
   }
+static Future create(Map data) async { return true; }
 }
