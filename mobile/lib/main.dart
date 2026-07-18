@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:upgrader/upgrader.dart';
 import 'screens/dashboard_screen.dart';
 
 void main(){runApp(const BakeryApp());}
@@ -11,7 +12,7 @@ return MaterialApp(
 debugShowCheckedModeBanner:false,
 title:'Bakery Manager AI',
 theme:ThemeData(primarySwatch:Colors.orange),
-home:const DashboardScreen()
+home:UpgradeAlert(child: const DashboardScreen())
 );
 }
 }
