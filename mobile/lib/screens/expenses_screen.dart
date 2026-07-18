@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/expense_service.dart';
 
 class ExpensesScreen extends StatefulWidget {
   const ExpensesScreen({super.key});
@@ -13,6 +14,11 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
   final amountController = TextEditingController();
 
   void saveExpense() {
+    ExpenseService.save(
+      title: titleController.text,
+      amount: int.tryParse(amountController.text) ?? 0,
+    );
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('هزینه ثبت شد'),
