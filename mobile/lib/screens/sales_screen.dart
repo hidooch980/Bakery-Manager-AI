@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/sales_service.dart';
 
 class SalesScreen extends StatefulWidget {
   const SalesScreen({super.key});
@@ -14,6 +15,12 @@ class _SalesScreenState extends State<SalesScreen> {
   final breadController = TextEditingController();
 
   void saveSale() {
+    SalesService.save(
+      bread: int.tryParse(breadController.text) ?? 0,
+      cash: int.tryParse(cashController.text) ?? 0,
+      card: int.tryParse(cardController.text) ?? 0,
+    );
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('فروش امروز ثبت شد'),
