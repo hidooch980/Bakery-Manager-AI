@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/dashboard_service.dart';
 import '../widgets/weekly_chart.dart';
 import 'settings_screen.dart';
+import 'production_screen.dart';
 
 class DashboardScreen extends StatefulWidget{
 const DashboardScreen({super.key});
@@ -54,6 +55,12 @@ return Scaffold(
 appBar:AppBar(
 title:const Text('داشبورد مدیر'),
             actions:[
+              IconButton(
+                icon:const Icon(Icons.add_chart),
+                onPressed:(){
+                  Navigator.push(context, MaterialPageRoute(builder:(_)=>const ProductionScreen()));
+                },
+              ),
               IconButton(
                 icon:const Icon(Icons.settings),
                 onPressed:(){
