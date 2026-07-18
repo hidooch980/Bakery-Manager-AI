@@ -1,4 +1,4 @@
-class ExpenseServicee {
+class ExpenseService {
   static final List<Map<String, dynamic>> records = [];
 
   static void save({
