@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'bakery_info_screen.dart';
+import 'users_screen.dart';
+import 'production_settings_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -10,7 +13,7 @@ class SettingsScreen extends StatelessWidget {
         title: const Text('تنظیمات'),
       ),
       body: ListView(
-        children: const [
+        children: [
           ListTile(
             leading: Icon(Icons.store),
             title: Text('اطلاعات نانوایی'),
