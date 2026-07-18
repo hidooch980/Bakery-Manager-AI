@@ -1,29 +1,27 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'user_service.dart';
 
-class AuthService{
+class AuthService {
 
-static const baseUrl='http://185.97.118.255:3001';
+  static Map<String,dynamic>? currentUser;
 
-static Future login(String phone,String password) async{
+  static bool login(String name) {
 
-final r=await http.post(
-Uri.parse('$baseUrl/auth/login'),
-headers:{
-'Content-Type':'application/json'
-},
-body:jsonEncode({
-'phone':phone,
-'password':password
-})
-);
+    for(final user in UserService.getAll()) {
 
-if(r.statusCode==200){
-return jsonDecode(r.body);
-}
+      if(user['name'] == name) {
+        currentUser = user;
+        return true;
+      }
 
-throw Exception('ورود ناموفق');
+    }
 
-}
+    return false;
+  }
+
+  static String role(){
+
+    return currentUser?['role'] ?? '';
+
+  }
 
 }
