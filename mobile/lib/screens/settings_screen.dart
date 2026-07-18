@@ -11,7 +11,9 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PermissionGuard(
+      page:'manager',
+      child: Scaffold(
       appBar: AppBar(
         title: const Text('تنظیمات'),
       ),
@@ -38,6 +40,7 @@ class SettingsScreen extends StatelessWidget {
             subtitle: Text('Bakery Manager AI'),
           ),
         ],
+      ),
       ),
     );
   }
