@@ -6,34 +6,28 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('تنظیمات'),
-      ),
+      appBar: AppBar(title: const Text('تنظیمات')),
       body: ListView(
-        children: [
+        children: const [
           ListTile(
-            leading: const Icon(Icons.store),
-            title: const Text('اطلاعات نانوایی'),
-            subtitle: const Text('نام، شعبه و مشخصات'),
-            onTap: () {},
+            leading: Icon(Icons.store),
+            title: Text('اطلاعات نانوایی'),
+            subtitle: Text('نام و مشخصات نانوایی'),
           ),
           ListTile(
-            leading: const Icon(Icons.people),
-            title: const Text('مدیریت کاربران'),
-            subtitle: const Text('مدیر، فروشنده، خمیرگیر'),
-            onTap: () {},
+            leading: Icon(Icons.people),
+            title: Text('مدیریت کاربران'),
+            subtitle: Text('مدیر، فروشنده، خمیرگیر'),
           ),
           ListTile(
-            leading: const Icon(Icons.cloud_sync),
-            title: const Text('همگام‌سازی اطلاعات'),
-            subtitle: const Text('ارسال اطلاعات به سرور'),
-            onTap: () {},
+            leading: Icon(Icons.sync),
+            title: Text('همگام سازی'),
+            subtitle: Text('ارسال اطلاعات به سرور'),
           ),
           ListTile(
-            leading: const Icon(Icons.info),
-            title: const Text('درباره برنامه'),
-            subtitle: const Text('Bakery Manager AI'),
-            onTap: () {},
+            leading: Icon(Icons.info),
+            title: Text('درباره برنامه'),
+            subtitle: Text('Bakery Manager AI'),
           ),
         ],
       ),
