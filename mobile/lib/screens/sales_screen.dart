@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/sales_service.dart';
+import '../widgets/permission_guard.dart';
 
 class SalesScreen extends StatefulWidget {
   const SalesScreen({super.key});
@@ -30,7 +31,9 @@ class _SalesScreenState extends State<SalesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PermissionGuard(
+      page:'sales',
+      child: Scaffold(
       appBar: AppBar(
         title: const Text('ثبت فروش'),
       ),
@@ -72,6 +75,7 @@ class _SalesScreenState extends State<SalesScreen> {
 
           ],
         ),
+      ),
       ),
     );
   }
