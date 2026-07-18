@@ -1,28 +1,21 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+class SalesService {
+  static final List<Map<String, dynamic>> records = [];
 
-class SalesService{
+  static void save({
+    required int bread,
+    required int cash,
+    required int card,
+  }) {
+    records.add({
+      'date': DateTime.now().toString(),
+      'bread': bread,
+      'cash': cash,
+      'card': card,
+      'total': cash + card,
+    });
+  }
 
-static const baseUrl='http://185.97.118.255:3001';
-
-static Future create({
-required double amount,
-required String type,
-}) async{
-
-final r=await http.post(
-Uri.parse('$baseUrl/sales'),
-headers:{
-'Content-Type':'application/json'
-},
-body:jsonEncode({
-'total':amount,
-'type':type
-})
-);
-
-return jsonDecode(r.body);
-
-}
-
+  static List<Map<String, dynamic>> getAll() {
+    return records;
+  }
 }
