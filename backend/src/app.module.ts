@@ -39,9 +39,11 @@ import { SellerDebtModule } from './seller-debt/seller-debt.module';
 import { NotificationModule } from './notification/notification.module';
 import { BreadTypeModule } from './bread-type/bread-type.module';
 import { ProductionBalanceModule } from './production-balance/production-balance.module';
+import { AppVersionModule } from './app-version/app-version.module';
+import { DeviceModule } from './device/device.module';
 
 @Module({
-  imports: [ProductionBalanceModule, ConfigModule.forRoot({ isGlobal: true }), AuthModule, NaninoModule, DashboardModule, SalesProfitModule,PrismaModule, ProductsModule, InventoryModule, MaterialsModule, ProductionModule, IngredientsModule, CashboxModule, ExpensesModule, SalesModule, ReportsModule, AiModule, InventoryAiModule, EmployeesModule, FinancialModule, CostAnalysisModule, SalesProfitModule, DashboardModule, ProductionAiModule, BakerySettingsModule, FlourControlModule, FlourPurchaseModule, ProductionCostModule, ProfitDashboardModule, SellerShiftModule, ProductionSalesControlModule, AiAdvisorModule, DailyReportModule, BranchModule, UnitConversionModule, FinancialReportModule, DailySaleModule, SellerDebtModule, NotificationModule, BreadTypeModule, ProductionBalanceModule],
+  imports: [ProductionBalanceModule, ConfigModule.forRoot({ isGlobal: true }), AuthModule, NaninoModule, DashboardModule, SalesProfitModule,PrismaModule, ProductsModule, InventoryModule, MaterialsModule, ProductionModule, IngredientsModule, CashboxModule, ExpensesModule, SalesModule, ReportsModule, AiModule, InventoryAiModule, EmployeesModule, FinancialModule, CostAnalysisModule, SalesProfitModule, DashboardModule, ProductionAiModule, BakerySettingsModule, FlourControlModule, FlourPurchaseModule, ProductionCostModule, ProfitDashboardModule, SellerShiftModule, ProductionSalesControlModule, AiAdvisorModule, DailyReportModule, BranchModule, UnitConversionModule, FinancialReportModule, DailySaleModule, SellerDebtModule, NotificationModule, BreadTypeModule, ProductionBalanceModule, AppVersionModule, DeviceModule],
   providers: [AppService],
 })
 export class AppModule {}

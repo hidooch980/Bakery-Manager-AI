@@ -484,3 +484,47 @@ model AppVersion {
   active      Boolean  @default(true)
   createdAt   DateTime @default(now())
 }
+
+model License {
+  id         String   @id @default(uuid())
+  bakeryName String
+  licenseKey String   @unique
+  plan       String   @default("basic")
+  maxDevices Int      @default(1)
+  active     Boolean  @default(true)
+  startDate  DateTime @default(now())
+  expireDate DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  bakery     Bakery?  @relation(fields: [bakeryId], references: [id])
+  bakeryId   String?
+}
+
+model Device {
+  id          String   @id @default(uuid())
+  deviceId    String   @unique
+  deviceName  String?
+  platform    String?
+  appVersion  String?
+  buildNumber Int?
+  active      Boolean  @default(true)
+  lastSeen    DateTime @default(now())
+  bakeryId    String?
+  bakery      Bakery?  @relation(fields: [bakeryId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Bakery {
+  id        String   @id @default(uuid())
+  name      String
+  code      String   @unique
+  phone     String?
+  address   String?
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  licenses License[]
+  devices  Device[]
+}

@@ -2,7 +2,8 @@ name: Android APK Build
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -19,13 +20,18 @@ jobs:
 
       - uses: android-actions/setup-android@v3
 
+      - name: Show project structure
+        run: |
+          pwd
+          ls -la
+          find . -name gradlew
+
       - name: Grant Gradle Permission
-        run: chmod +x ./mobile/android/gradlew
+        run: chmod +x mobile/android/gradlew
 
       - name: Build APK
-        run: |
-          cd mobile/android
-          ./gradlew assembleDebug
+        working-directory: mobile/android
+        run: ./gradlew assembleDebug
 
       - uses: actions/upload-artifact@v4
         with:
