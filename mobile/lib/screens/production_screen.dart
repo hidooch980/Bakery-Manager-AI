@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/permission_guard.dart';
 import '../services/production_service.dart';
 
 class ProductionScreen extends StatefulWidget {
@@ -29,7 +30,9 @@ class _ProductionScreenState extends State<ProductionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PermissionGuard(
+      page:'production',
+      child: Scaffold(
       appBar: AppBar(
         title: const Text('ثبت تولید'),
       ),
@@ -65,6 +68,7 @@ class _ProductionScreenState extends State<ProductionScreen> {
             ),
           ],
         ),
+      ),
       ),
     );
   }
