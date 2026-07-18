@@ -6,23 +6,25 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('تنظیمات')),
+      appBar: AppBar(
+        title: const Text('تنظیمات'),
+      ),
       body: ListView(
         children: const [
           ListTile(
             leading: Icon(Icons.store),
             title: Text('اطلاعات نانوایی'),
-            subtitle: Text('نام و مشخصات نانوایی'),
+            subtitle: Text('نام و مشخصات مجموعه'),
           ),
           ListTile(
-            leading: Icon(Icons.people),
+            leading: Icon(Icons.person),
             title: Text('مدیریت کاربران'),
-            subtitle: Text('مدیر، فروشنده، خمیرگیر'),
+            subtitle: Text('مدیر و کارکنان'),
           ),
           ListTile(
-            leading: Icon(Icons.sync),
-            title: Text('همگام سازی'),
-            subtitle: Text('ارسال اطلاعات به سرور'),
+            leading: Icon(Icons.backup),
+            title: Text('پشتیبان‌گیری'),
+            subtitle: Text('ذخیره اطلاعات'),
           ),
           ListTile(
             leading: Icon(Icons.info),
