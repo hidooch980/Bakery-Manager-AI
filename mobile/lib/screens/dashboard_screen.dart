@@ -11,6 +11,8 @@ import 'expenses_report_screen.dart';
 import 'profit_report_screen.dart';
 import 'inventory_screen.dart';
 import 'inventory_report_screen.dart';
+import 'consumption_screen.dart';
+import 'consumption_report_screen.dart';
 
 class DashboardScreen extends StatefulWidget{
 const DashboardScreen({super.key});
@@ -63,6 +65,18 @@ return Scaffold(
 appBar:AppBar(
 title:const Text('داشبورد مدیر'),
             actions:[
+              IconButton(
+                icon:const Icon(Icons.remove_circle),
+                onPressed:(){
+                  Navigator.push(context, MaterialPageRoute(builder:(_)=>const ConsumptionScreen()));
+                },
+              ),
+              IconButton(
+                icon:const Icon(Icons.bar_chart),
+                onPressed:(){
+                  Navigator.push(context, MaterialPageRoute(builder:(_)=>const ConsumptionReportScreen()));
+                },
+              ),
               IconButton(
                 icon:const Icon(Icons.inventory),
                 onPressed:(){
