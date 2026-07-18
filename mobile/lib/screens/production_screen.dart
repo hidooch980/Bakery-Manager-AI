@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/production_service.dart';
 
 class ProductionScreen extends StatefulWidget {
   const ProductionScreen({super.key});
@@ -13,6 +14,12 @@ class _ProductionScreenState extends State<ProductionScreen> {
   final breadController = TextEditingController();
 
   void saveProduction() {
+    ProductionService.save(
+      dough: int.tryParse(doughController.text) ?? 0,
+      pieces: int.tryParse(pieceController.text) ?? 0,
+      bread: int.tryParse(breadController.text) ?? 0,
+    );
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('تولید امروز ثبت شد'),
