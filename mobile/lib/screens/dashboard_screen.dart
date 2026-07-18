@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/auth_service.dart';
 import '../services/dashboard_service.dart';
 import '../widgets/weekly_chart.dart';
 import 'settings_screen.dart';
@@ -22,6 +23,9 @@ State<DashboardScreen> createState()=>_DashboardScreenState();
 }
 
 class _DashboardScreenState extends State<DashboardScreen>{
+
+  String role = '';
+
 
 Map daily={};
 List weekly=[];
