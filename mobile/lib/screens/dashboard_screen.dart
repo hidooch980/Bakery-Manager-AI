@@ -3,6 +3,7 @@ import '../services/dashboard_service.dart';
 import '../widgets/weekly_chart.dart';
 import 'settings_screen.dart';
 import 'production_screen.dart';
+import 'production_list_screen.dart';
 
 class DashboardScreen extends StatefulWidget{
 const DashboardScreen({super.key});
@@ -55,6 +56,12 @@ return Scaffold(
 appBar:AppBar(
 title:const Text('داشبورد مدیر'),
             actions:[
+              IconButton(
+                icon:const Icon(Icons.list_alt),
+                onPressed:(){
+                  Navigator.push(context, MaterialPageRoute(builder:(_)=>const ProductionListScreen()));
+                },
+              ),
               IconButton(
                 icon:const Icon(Icons.add_chart),
                 onPressed:(){
