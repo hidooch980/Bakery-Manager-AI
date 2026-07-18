@@ -1,44 +1,24 @@
-import 'package:shared_preferences/shared_preferences.dart';
+class UserService {
 
-class UserService{
+  static final List<Map<String, dynamic>> users = [
+    {
+      'name': 'مدیر',
+      'role': 'manager',
+    }
+  ];
 
-static Future saveLogin(dynamic result) async{
+  static void add({
+    required String name,
+    required String role,
+  }) {
+    users.add({
+      'name': name,
+      'role': role,
+    });
+  }
 
-final p=await SharedPreferences.getInstance();
-
-await p.setString(
-'token',
-result['access_token']
-);
-
-await p.setString(
-'role',
-result['user']['role']
-);
-
-await p.setString(
-'name',
-result['user']['name']
-);
-
-}
-
-
-static Future<String?> role() async{
-
-final p=await SharedPreferences.getInstance();
-
-return p.getString('role');
-
-}
-
-
-static Future logout() async{
-
-final p=await SharedPreferences.getInstance();
-
-await p.clear();
-
-}
+  static List<Map<String, dynamic>> getAll() {
+    return users;
+  }
 
 }
