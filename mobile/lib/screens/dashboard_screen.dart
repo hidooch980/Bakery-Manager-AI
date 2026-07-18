@@ -4,6 +4,8 @@ import '../widgets/weekly_chart.dart';
 import 'settings_screen.dart';
 import 'production_screen.dart';
 import 'production_list_screen.dart';
+import 'sales_screen.dart';
+import 'sales_report_screen.dart';
 
 class DashboardScreen extends StatefulWidget{
 const DashboardScreen({super.key});
@@ -56,6 +58,18 @@ return Scaffold(
 appBar:AppBar(
 title:const Text('داشبورد مدیر'),
             actions:[
+              IconButton(
+                icon:const Icon(Icons.point_of_sale),
+                onPressed:(){
+                  Navigator.push(context, MaterialPageRoute(builder:(_)=>const SalesScreen()));
+                },
+              ),
+              IconButton(
+                icon:const Icon(Icons.receipt_long),
+                onPressed:(){
+                  Navigator.push(context, MaterialPageRoute(builder:(_)=>const SalesReportScreen()));
+                },
+              ),
               IconButton(
                 icon:const Icon(Icons.list_alt),
                 onPressed:(){
