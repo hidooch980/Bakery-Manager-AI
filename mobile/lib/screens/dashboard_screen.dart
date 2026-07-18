@@ -8,6 +8,7 @@ import 'sales_screen.dart';
 import 'sales_report_screen.dart';
 import 'expenses_screen.dart';
 import 'expenses_report_screen.dart';
+import 'profit_report_screen.dart';
 
 class DashboardScreen extends StatefulWidget{
 const DashboardScreen({super.key});
@@ -60,6 +61,12 @@ return Scaffold(
 appBar:AppBar(
 title:const Text('داشبورد مدیر'),
             actions:[
+              IconButton(
+                icon:const Icon(Icons.account_balance),
+                onPressed:(){
+                  Navigator.push(context, MaterialPageRoute(builder:(_)=>const ProfitReportScreen()));
+                },
+              ),
               IconButton(
                 icon:const Icon(Icons.money_off),
                 onPressed:(){
