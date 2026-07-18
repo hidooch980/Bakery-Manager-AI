@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'users_screen.dart';
+import '../widgets/permission_guard.dart';
 import 'bakery_info_screen.dart';
 import 'users_screen.dart';
+import '../widgets/permission_guard.dart';
 import 'production_settings_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
