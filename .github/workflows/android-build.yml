@@ -1,39 +1,27 @@
 name: Android APK Build
-
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
-
-      - uses: android-actions/setup-android@v3
-
-      - name: Show project structure
-        run: |
-          pwd
-          ls -la
-          find . -name gradlew
-
-      - name: Grant Gradle Permission
-        run: chmod +x mobile/android/gradlew
-
+      - name: Install dependencies
+        working-directory: mobile
+        run: flutter pub get
       - name: Build APK
-        working-directory: mobile/android
-        run: ./gradlew assembleDebug
-
+        working-directory: mobile
+        run: flutter build apk --release
       - uses: actions/upload-artifact@v4
         with:
-          name: BakeryManagerAI-Debug
-          path: mobile/android/app/build/outputs/apk/debug/*.apk
+          name: BakeryManagerAI-Release
+          path: mobile/build/app/outputs/flutter-apk/app-release.apk
