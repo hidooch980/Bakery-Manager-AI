@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dashboard_screen.dart';
+import '../services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,11 +14,24 @@ class _LoginScreenState extends State<LoginScreen> {
   final pass = TextEditingController();
 
   void login() {
-    if (user.text.isNotEmpty && pass.text.isNotEmpty) {
+
+    if(AuthService.login(user.text)) {
+
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const DashboardScreen()),
+        MaterialPageRoute(
+          builder: (_) => const DashboardScreen(),
+        ),
       );
+
+    } else {
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('کاربر پیدا نشد'),
+        ),
+      );
+
     }
   }
 
