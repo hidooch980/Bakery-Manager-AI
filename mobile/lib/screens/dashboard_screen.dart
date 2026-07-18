@@ -69,6 +69,18 @@ return Scaffold(
 appBar:AppBar(
 title:const Text('داشبورد مدیر'),
             actions:[
+              if(role=='manager'||role=='seller')
+              IconButton(
+                icon:const Icon(Icons.point_of_sale),
+                onPressed:(){
+                  Navigator.push(context, MaterialPageRoute(builder:(_)=>const SalesScreen()));
+                },
+              ),
+              if(role=='manager'||role=='dough_worker'||role=='divider')
+              IconButton(
+                icon:const Icon(Icons.production_quantity_limits),
+                onPressed:(){},
+              ),
               IconButton(
                 icon:const Icon(Icons.remove_circle),
                 onPressed:(){
