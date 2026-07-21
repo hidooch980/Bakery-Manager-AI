@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "ProductionBatch" ADD COLUMN     "doughWeight" DOUBLE PRECISION NOT NULL DEFAULT 0,
+ADD COLUMN     "shortage" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "soldBreadCount" INTEGER NOT NULL DEFAULT 0;
