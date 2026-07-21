@@ -1,3 +1,13 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'bakery_system_screen.dart';
+import 'user_management_screen.dart';
+import 'seller_panel_screen.dart';
+import 'dough_worker_screen.dart';
+import '../services/role_service.dart';
+import '../services/auto_update_service.dart';
+import '../services/bakery_system_service.dart';
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 import '../services/local_database_service.dart';
@@ -15,46 +25,72 @@ class StableManagerScreen extends StatefulWidget {
 }
 
 class _StableManagerScreenState extends State<StableManagerScreen> {
-  int index = 0;
+  int _tabIdx = 0;
+  String _bakeryName = "نانوایی";
 
-  final pages = const [
-    _DashboardTab(),
-    _SalesTab(),
-    _ProductionTab(),
-    _FlourTab(),
-    _ExpenseTab(),
-    _ReportsTab(),
-    _AiTab(),
-    AdvancedFeaturesScreen(),
-    _SettingsTab(),
+  List<Widget> get _allPages => [
+    const _DashboardTab(),
+    const SellerPanelScreen(),
+    const DoughWorkerScreen(),
+    const _FlourTab(),
+    const _ExpenseTab(),
+    const _ReportsTab(),
+    const _AiTab(),
+    const AdvancedFeaturesScreen(),
+    _SettingsTab(bakeryName: _bakeryName),
   ];
+
+  static const _icons = [
+    ("داشبورد", Icons.dashboard_outlined,       Icons.dashboard),
+    ("فروش",      Icons.point_of_sale_outlined,   Icons.point_of_sale),
+    ("تولید",    Icons.bakery_dining_outlined,   Icons.bakery_dining),
+    ("آرد",       Icons.inventory_2_outlined,     Icons.inventory_2),
+    ("هزینه",    Icons.receipt_long_outlined,    Icons.receipt_long),
+    ("گزارش",    Icons.bar_chart_outlined,       Icons.bar_chart),
+    ("هوش",       Icons.psychology_outlined,      Icons.psychology),
+    ("ویژه",     Icons.workspace_premium_outlined, Icons.workspace_premium),
+    ("تنظیم",    Icons.settings_outlined,        Icons.settings),
+  ];
+
+  List<int> get _allowed => AppRole.allowedTabs(AuthService.role());
 
   @override
   void initState() {
     super.initState();
     LocalDatabaseService.ensureDefaults();
+    _loadBakeryName();
+    _scheduleUpdateCheck();
+  }
+
+  Future<void> _loadBakeryName() async {
+    final n = await BakerySystemService.bakeryName();
+    if (mounted) setState(() => _bakeryName = n);
+  }
+
+  void _scheduleUpdateCheck() {
+    Future.delayed(const Duration(seconds: 5), () async {
+      if (!mounted) return;
+      final info = await AutoUpdateService.checkUpdate();
+      if (info != null && mounted) await showUpdateDialog(context, info);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final allowed = _allowed;
+    final safeIdx = allowed.contains(_tabIdx) ? _tabIdx : allowed[0];
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        body: pages[index],
+        body: _allPages[safeIdx],
         bottomNavigationBar: NavigationBar(
-          selectedIndex: index,
-          onDestinationSelected: (v) => setState(() => index = v),
-          destinations: const [
-            NavigationDestination(icon: Icon(Icons.dashboard), label: 'داشبورد'),
-            NavigationDestination(icon: Icon(Icons.point_of_sale), label: 'فروش'),
-            NavigationDestination(icon: Icon(Icons.bakery_dining), label: 'تولید'),
-            NavigationDestination(icon: Icon(Icons.inventory), label: 'آرد'),
-            NavigationDestination(icon: Icon(Icons.money_off), label: 'هزینه'),
-            NavigationDestination(icon: Icon(Icons.assessment), label: 'گزارش'),
-            NavigationDestination(icon: Icon(Icons.auto_awesome), label: 'AI'),
-            NavigationDestination(icon: Icon(Icons.workspace_premium), label: 'ویژه'),
-            NavigationDestination(icon: Icon(Icons.settings), label: 'تنظیمات'),
-          ],
+          selectedIndex: allowed.indexOf(safeIdx),
+          onDestinationSelected: (v) => setState(() => _tabIdx = allowed[v]),
+          destinations: allowed.map((i) {
+            final l = _icons[i];
+            return NavigationDestination(
+              icon: Icon(l.$2), selectedIcon: Icon(l.$3), label: l.$1);
+          }).toList(),
         ),
       ),
     );
@@ -78,6 +114,22 @@ class _AppScaffold extends StatelessWidget {
     );
   }
 }
+
+  static const _allDestinations = [
+    NavigationDestination(icon: Icon(Icons.dashboard_outlined), selectedIcon: Icon(Icons.dashboard), label: 'داشبورد'),
+    NavigationDestination(icon: Icon(Icons.point_of_sale_outlined), selectedIcon: Icon(Icons.point_of_sale), label: 'فروش'),
+    NavigationDestination(icon: Icon(Icons.bakery_dining_outlined), selectedIcon: Icon(Icons.bakery_dining), label: 'تولید'),
+    NavigationDestination(icon: Icon(Icons.inventory_2_outlined), selectedIcon: Icon(Icons.inventory_2), label: 'آرد'),
+    NavigationDestination(icon: Icon(Icons.receipt_long_outlined), selectedIcon: Icon(Icons.receipt_long), label: 'هزینه'),
+    NavigationDestination(icon: Icon(Icons.bar_chart_outlined), selectedIcon: Icon(Icons.bar_chart), label: 'گزارش'),
+    NavigationDestination(icon: Icon(Icons.psychology_outlined), selectedIcon: Icon(Icons.psychology), label: 'هوش'),
+    NavigationDestination(icon: Icon(Icons.workspace_premium_outlined), selectedIcon: Icon(Icons.workspace_premium), label: 'ویژه'),
+    NavigationDestination(icon: Icon(Icons.settings_outlined), selectedIcon: Icon(Icons.settings), label: 'تنظیم'),
+  ];
+
+  List<NavigationDestination> _buildDestinations() {
+    return _allowed.map((i) => _allDestinations[i]).toList();
+  }
 
 class _DashboardTab extends StatefulWidget {
   const _DashboardTab();
