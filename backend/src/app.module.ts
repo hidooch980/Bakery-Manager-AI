@@ -46,7 +46,6 @@ import { DocumentSequenceModule } from './document-sequence/document-sequence.mo
 import { UsersModule } from './users/users.module';
 import { DoughWeightControlModule } from './dough-weight-control/dough-weight-control.module';
 import { FlourSaleModule } from './flour-sale/flour-sale.module';
-import { CafeRestaurantModule } from './cafe-restaurant/cafe-restaurant.module';
 
 @Module({
   imports: [
@@ -97,7 +96,6 @@ import { CafeRestaurantModule } from './cafe-restaurant/cafe-restaurant.module';
     DeviceModule,
     ProductionStandardsModule,
     DocumentSequenceModule,
-    CafeRestaurantModule,
     UsersModule,
   ],
   controllers: [AppController],

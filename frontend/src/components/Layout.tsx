@@ -19,8 +19,6 @@ import {
   Truck,
   ShoppingCart,
   GitCompare,
-  Coffee,
-  Utensils,
 } from "lucide-react";
 import { useAuth } from "../auth/AuthContext";
 
@@ -34,8 +32,6 @@ const navItems = [
   { to: "/flour-purchase", label: "خرید آرد", icon: Truck },
   { to: "/flour-sale", label: "فروش خرده آرد", icon: ShoppingCart },
   { to: "/nanino", label: "دوره نانینو", icon: GitCompare },
-  { to: "/cafe-menu", label: "منوی کافه", icon: Coffee },
-  { to: "/cafe-orders", label: "سفارش کافه و رستوران", icon: Utensils },
   { to: "/inventory", label: "انبار", icon: Boxes },
   { to: "/cashbox", label: "صندوق", icon: Banknote },
   { to: "/payroll", label: "حقوق و دستمزد", icon: HandCoins },
@@ -58,8 +54,6 @@ const pageTitles: Record<string, string> = {
   "/flour-purchase": "خرید آرد",
   "/flour-sale": "فروش خرده آرد",
   "/nanino": "دوره نانینو",
-  "/cafe-menu": "منوی کافه",
-  "/cafe-orders": "سفارش کافه و رستوران",
   "/inventory": "انبار",
   "/cashbox": "صندوق",
   "/payroll": "حقوق و دستمزد",
