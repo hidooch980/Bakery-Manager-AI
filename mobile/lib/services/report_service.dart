@@ -1,10 +1,9 @@
 import 'api_service.dart';
 
 class ReportService {
-  final _api = ApiService();
-
-  Future<Map<String, dynamic>> getDailyReport() async {
-    final data = await _api.getData('/daily-report');
-    return data as Map<String, dynamic>;
+  static Future<Map<String, dynamic>> daily() async {
+    final data = await ApiService.getData('/daily-report');
+    if (data is Map<String, dynamic>) return data;
+    return {};
   }
 }
