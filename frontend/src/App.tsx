@@ -17,6 +17,7 @@ import Shifts from "./pages/Shifts";
 import BreadTypes from "./pages/BreadTypes";
 import Nanino from "./pages/Nanino";
 import FlourPurchase from "./pages/FlourPurchase";
+import FlourSale from "./pages/FlourSale";
 import DoughWeightControl from "./pages/DoughWeightControl";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import Layout from "./components/Layout";
@@ -47,6 +48,7 @@ const routes: Array<{ path: string; element: React.ReactNode }> = [
   { path: "/bread-types", element: <BreadTypes /> },
   { path: "/nanino", element: <Nanino /> },
   { path: "/flour-purchase", element: <FlourPurchase /> },
+  { path: "/flour-sale", element: <FlourSale /> },
   { path: "/dough-weight-control", element: <DoughWeightControl /> },
   { path: "/report", element: <Dashboard /> },
 ];

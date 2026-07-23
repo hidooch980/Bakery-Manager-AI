@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../api/client";
-import { UserPlus, AlertCircle, CheckCircle2 } from "lucide-react";
+import { UserPlus, AlertCircle, CheckCircle2, KeyRound } from "lucide-react";
 
 const ROLES = [
   { value: "MANAGER", label: "مدیر" },
@@ -26,6 +26,10 @@ export default function Users() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [passwordUserId, setPasswordUserId] = useState<string | null>(null);
+  const [newPassword, setNewPassword] = useState("");
+  const [passwordSaving, setPasswordSaving] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
 
   async function load() {
     try {
@@ -57,6 +61,37 @@ export default function Users() {
       setError(e?.response?.data?.message || "خطا در ایجاد کاربر");
     } finally {
       setLoading(false);
+    }
+  }
+
+  function openPasswordDialog(userId: string) {
+    setPasswordUserId(userId);
+    setNewPassword("");
+    setPasswordError("");
+  }
+
+  function closePasswordDialog() {
+    setPasswordUserId(null);
+    setNewPassword("");
+    setPasswordError("");
+  }
+
+  async function savePassword() {
+    if (!passwordUserId) return;
+    setPasswordError("");
+    if (!newPassword || newPassword.length < 4) {
+      setPasswordError("رمز عبور باید حداقل ۴ کاراکتر باشد");
+      return;
+    }
+    setPasswordSaving(true);
+    try {
+      await api.patch(`/users/${passwordUserId}`, { password: newPassword });
+      setMessage("رمز عبور با موفقیت تغییر کرد");
+      closePasswordDialog();
+    } catch (e: any) {
+      setPasswordError(e?.response?.data?.message || "خطا در تغییر رمز عبور");
+    } finally {
+      setPasswordSaving(false);
     }
   }
 
@@ -147,6 +182,7 @@ export default function Users() {
                 <th>نام</th>
                 <th>موبایل</th>
                 <th>نقش</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -155,6 +191,17 @@ export default function Users() {
                   <td>{u.name}</td>
                   <td>{u.phone}</td>
                   <td>{roleLabel(u.role)}</td>
+                  <td>
+                    <button
+                      className="btn-ghost"
+                      type="button"
+                      onClick={() => openPasswordDialog(u.id)}
+                      style={{ display: "flex", alignItems: "center", gap: 6 }}
+                    >
+                      <KeyRound size={14} />
+                      تغییر رمز
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -164,6 +211,67 @@ export default function Users() {
           ) : null}
         </div>
       </div>
+
+      {passwordUserId && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.5)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 50,
+          }}
+          onClick={closePasswordDialog}
+        >
+          <div
+            className="card"
+            style={{ width: 320 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="card-title">تغییر رمز عبور</div>
+            <div className="form-grid" style={{ marginBottom: 12 }}>
+              <div className="field">
+                <label>رمز عبور جدید</label>
+                <input
+                  className="input"
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  autoFocus
+                />
+              </div>
+            </div>
+
+            {passwordError && (
+              <div className="alert alert-error">
+                <AlertCircle size={16} />
+                {passwordError}
+              </div>
+            )}
+
+            <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
+              <button
+                className="btn btn-primary"
+                type="button"
+                onClick={savePassword}
+                disabled={passwordSaving}
+                style={{ flex: 1 }}
+              >
+                {passwordSaving ? "در حال ذخیره..." : "ذخیره"}
+              </button>
+              <button
+                className="btn-ghost"
+                type="button"
+                onClick={closePasswordDialog}
+              >
+                انصراف
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

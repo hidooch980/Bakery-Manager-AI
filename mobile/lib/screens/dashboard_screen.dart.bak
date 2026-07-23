@@ -1,0 +1,151 @@
+import 'package:flutter/material.dart';
+import '../services/dashboard_service.dart';
+import '../widgets/weekly_chart.dart';
+
+class DashboardScreen extends StatefulWidget {
+  const DashboardScreen({super.key});
+
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+
+  Map daily = {};
+  List weekly = [];
+
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    load();
+  }
+
+  Future<void> load() async {
+    setState(() {
+      loading = true;
+    });
+
+    final d = await DashboardService.daily();
+    final w = await DashboardService.weekly();
+
+    setState(() {
+      daily = d;
+      weekly = w;
+      loading = false;
+    });
+  }
+
+
+  Widget card(String title, dynamic value, IconData icon) {
+    return Card(
+      child: ListTile(
+        leading: Icon(icon, size: 35),
+        title: Text(title),
+        subtitle: Text(
+          '$value',
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+
+    if (loading) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+
+    final sales = daily['sales'] ?? 0;
+    final expenses = daily['expenses'] ?? 0;
+    final production = daily['production'] ?? 0;
+
+    final profit = sales - expenses;
+
+
+    return Scaffold(
+
+      appBar: AppBar(
+        title: const Text('داشبورد مدیریت نانوایی'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: load,
+          )
+        ],
+      ),
+
+
+      body: RefreshIndicator(
+        onRefresh: load,
+
+        child: ListView(
+
+          padding: const EdgeInsets.all(12),
+
+          children: [
+
+            card(
+              'فروش امروز',
+              sales,
+              Icons.point_of_sale,
+            ),
+
+
+            card(
+              'هزینه امروز',
+              expenses,
+              Icons.money_off,
+            ),
+
+
+            card(
+              'تولید امروز',
+              production,
+              Icons.production_quantity_limits,
+            ),
+
+
+            card(
+              'سود امروز',
+              profit,
+              Icons.account_balance_wallet,
+            ),
+
+
+            const SizedBox(height:20),
+
+
+            const Text(
+              'گزارش هفتگی',
+              style: TextStyle(
+                fontSize:20,
+                fontWeight:FontWeight.bold,
+              ),
+            ),
+
+
+            SizedBox(
+              height:250,
+              child: WeeklyChart(data: weekly),
+            ),
+
+
+          ],
+        ),
+      ),
+
+    );
+  }
+}

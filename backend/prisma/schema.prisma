@@ -249,6 +249,17 @@ model DailyProfit {
   createdAt      DateTime @default(now())
 }
 
+model FlourSale {
+  id          String   @id @default(uuid())
+  date        DateTime @default(now())
+  unit        String
+  quantity    Float
+  unitPrice   Float
+  totalAmount Float
+  note        String?
+  createdAt   DateTime @default(now())
+}
+
 model FlourPurchase {
   purchaseNo String @unique
   id            String   @id @default(uuid())

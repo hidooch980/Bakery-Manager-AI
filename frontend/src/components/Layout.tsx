@@ -17,6 +17,7 @@ import {
   Package,
   Scale,
   Truck,
+  ShoppingCart,
   GitCompare,
 } from "lucide-react";
 import { useAuth } from "../auth/AuthContext";
@@ -29,6 +30,7 @@ const navItems = [
   { to: "/bread-types", label: "نوع نان", icon: Package },
   { to: "/dough-weight-control", label: "کنترل وزن چانه", icon: Scale },
   { to: "/flour-purchase", label: "خرید آرد", icon: Truck },
+  { to: "/flour-sale", label: "فروش خرده آرد", icon: ShoppingCart },
   { to: "/nanino", label: "دوره نانینو", icon: GitCompare },
   { to: "/inventory", label: "انبار", icon: Boxes },
   { to: "/cashbox", label: "صندوق", icon: Banknote },
@@ -50,6 +52,7 @@ const pageTitles: Record<string, string> = {
   "/bread-types": "نوع نان",
   "/dough-weight-control": "کنترل وزن چانه",
   "/flour-purchase": "خرید آرد",
+  "/flour-sale": "فروش خرده آرد",
   "/nanino": "دوره نانینو",
   "/inventory": "انبار",
   "/cashbox": "صندوق",

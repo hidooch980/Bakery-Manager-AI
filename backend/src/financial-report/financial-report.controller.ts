@@ -9,4 +9,9 @@ export class FinancialReportController {
   monthly(@Query('year') year: string) {
     return this.service.monthly(Number(year));
   }
+
+  @Get('balance-sheet')
+  balanceSheet() {
+    return this.service.balanceSheet();
+  }
 }

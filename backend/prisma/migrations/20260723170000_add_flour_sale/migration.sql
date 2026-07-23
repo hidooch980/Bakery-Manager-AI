@@ -1,0 +1,12 @@
+CREATE TABLE "FlourSale" (
+    "id" TEXT NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "unit" TEXT NOT NULL,
+    "quantity" DOUBLE PRECISION NOT NULL,
+    "unitPrice" DOUBLE PRECISION NOT NULL,
+    "totalAmount" DOUBLE PRECISION NOT NULL,
+    "note" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "FlourSale_pkey" PRIMARY KEY ("id")
+);

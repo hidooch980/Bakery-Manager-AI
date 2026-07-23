@@ -45,6 +45,7 @@ import { ProductionStandardsModule } from './production-standards/production-sta
 import { DocumentSequenceModule } from './document-sequence/document-sequence.module';
 import { UsersModule } from './users/users.module';
 import { DoughWeightControlModule } from './dough-weight-control/dough-weight-control.module';
+import { FlourSaleModule } from './flour-sale/flour-sale.module';
 
 @Module({
   imports: [
@@ -62,6 +63,7 @@ import { DoughWeightControlModule } from './dough-weight-control/dough-weight-co
     IngredientsModule,
     CashboxModule,
     DoughWeightControlModule,
+    FlourSaleModule,
     ExpensesModule,
     SalesModule,
     ReportsModule,
