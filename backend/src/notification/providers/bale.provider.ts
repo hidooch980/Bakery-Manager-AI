@@ -13,7 +13,8 @@ export class BaleProvider {
       throw new Error('BALE_BOT_TOKEN not configured');
     }
 
-    const url = `https://tapi.bale.ai/bot${token}/sendMessage`;
+    const baseUrl = 'https://tapi.bale.ai/bot' + token;
+    const url = baseUrl + '/sendMessage';
 
     const response = await firstValueFrom(
       this.http.post(url, {
