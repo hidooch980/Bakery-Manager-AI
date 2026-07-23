@@ -7,13 +7,13 @@ export class FlourPurchaseController {
   constructor(private readonly service: FlourPurchaseService) {}
 
   @Get()
-  @Roles('MANAGER','ACCOUNTANT')
+  @Roles('MANAGER', 'ACCOUNTANT')
   findAll() {
     return this.service.findAll();
   }
 
   @Post()
-  @Roles('MANAGER','ACCOUNTANT')
+  @Roles('MANAGER', 'ACCOUNTANT')
   create(@Body() data: any) {
     return this.service.create(data);
   }

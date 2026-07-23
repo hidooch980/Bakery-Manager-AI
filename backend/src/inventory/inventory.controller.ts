@@ -8,37 +8,37 @@ export class InventoryController {
   constructor(private service: InventoryService) {}
 
   @Get()
-  @Roles('MANAGER','ACCOUNTANT')
+  @Roles('MANAGER', 'ACCOUNTANT')
   findAll() {
     return this.service.findAll();
   }
 
   @Post()
-  @Roles('MANAGER','ACCOUNTANT')
+  @Roles('MANAGER', 'ACCOUNTANT')
   create(@Body() data: CreateInventoryDto) {
     return this.service.create(data);
   }
 
   @Patch(':id')
-  @Roles('MANAGER','ACCOUNTANT')
+  @Roles('MANAGER', 'ACCOUNTANT')
   update(@Param('id') id: string, @Body() data: CreateInventoryDto) {
     return this.service.update(id, data);
   }
 
   @Get('low-stock')
-  @Roles('MANAGER','ACCOUNTANT')
+  @Roles('MANAGER', 'ACCOUNTANT')
   lowStock() {
     return this.service.lowStock();
   }
 
   @Get('report')
-  @Roles('MANAGER','ACCOUNTANT')
+  @Roles('MANAGER', 'ACCOUNTANT')
   report() {
     return this.service.report();
   }
 
   @Post('merge-flour')
-  @Roles('MANAGER','ACCOUNTANT')
+  @Roles('MANAGER', 'ACCOUNTANT')
   mergeFlour() {
     return this.service.mergeFlourInventory();
   }

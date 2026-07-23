@@ -69,9 +69,7 @@ export class DashboardService {
       today: {
         sales: sales._sum.total ?? 0,
         expenses: expenses._sum.amount ?? 0,
-        profit:
-          (sales._sum.total ?? 0) -
-          (expenses._sum.amount ?? 0),
+        profit: (sales._sum.total ?? 0) - (expenses._sum.amount ?? 0),
         production: production._sum?.breadCount ?? 0,
       },
 

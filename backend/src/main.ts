@@ -12,7 +12,7 @@ async function bootstrap() {
   const reflector = app.get(Reflector);
 
   // احراز هویت JWT
-  app.useGlobalGuards(new JwtAuthGuard());
+  app.useGlobalGuards(new JwtAuthGuard(reflector));
 
   // بررسی نقش کاربر
   app.useGlobalGuards(new RolesGuard(reflector));
@@ -27,7 +27,9 @@ async function bootstrap() {
 
   app.enableCors();
 
-  await app.listen(3000, '0.0.0.0');
+  const port = Number(process.env.PORT) || 3000;
+  await app.listen(port, '0.0.0.0');
+  console.log(`🚀 Backend API running on http://0.0.0.0:${port}`);
 }
 
 bootstrap();

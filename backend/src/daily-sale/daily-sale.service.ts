@@ -15,7 +15,7 @@ export class DailySaleService {
 
     return this.prisma.dailySale.create({
       data: {
-          saleNo,
+        saleNo,
         breadType: data.breadType,
         quantity: data.quantity,
         pricePerBread: data.pricePerBread,

@@ -8,19 +8,19 @@ export class SalesController {
   constructor(private service: SalesService) {}
 
   @Get()
-  @Roles('MANAGER','SELLER')
+  @Roles('MANAGER', 'SELLER')
   findAll() {
     return this.service.findAll();
   }
 
   @Get('seller-report/:employeeId')
-  @Roles('MANAGER','SELLER')
+  @Roles('MANAGER', 'SELLER')
   sellerReport(@Param('employeeId') employeeId: string) {
     return this.service.sellerReport(employeeId);
   }
 
   @Post()
-  @Roles('MANAGER','SELLER')
+  @Roles('MANAGER', 'SELLER')
   create(@Body() data: CreateSaleDto) {
     return this.service.create(data);
   }

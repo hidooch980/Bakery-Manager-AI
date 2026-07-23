@@ -7,19 +7,19 @@ export class ProductionController {
   constructor(private readonly productionService: ProductionService) {}
 
   @Post()
-  @Roles('MANAGER','DOUGH_MAKER')
+  @Roles('MANAGER', 'DOUGH_MAKER')
   create(@Body() data: any) {
     return this.productionService.create(data);
   }
 
   @Get()
-  @Roles('MANAGER','ACCOUNTANT')
+  @Roles('MANAGER', 'ACCOUNTANT')
   findAll() {
     return this.productionService.findAll();
   }
 
   @Get(':id')
-  @Roles('MANAGER','DOUGH_MAKER')
+  @Roles('MANAGER', 'DOUGH_MAKER')
   findOne(@Param('id') id: string) {
     return this.productionService.findOne(id);
   }

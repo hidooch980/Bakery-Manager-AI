@@ -4,7 +4,10 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class ProductionService {
-  constructor(private readonly prisma: PrismaService, private readonly documentSequence: DocumentSequenceService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly documentSequence: DocumentSequenceService,
+  ) {}
 
   async create(data: {
     shift: string;

@@ -7,19 +7,19 @@ export class DailySaleController {
   constructor(private service: DailySaleService) {}
 
   @Post()
-  @Roles('MANAGER','SELLER')
+  @Roles('MANAGER', 'SELLER')
   create(@Body() body: any) {
     return this.service.create(body);
   }
 
   @Get()
-  @Roles('MANAGER','SELLER')
+  @Roles('MANAGER', 'SELLER')
   findAll() {
     return this.service.findAll();
   }
 
   @Get('today')
-  @Roles('MANAGER','SELLER')
+  @Roles('MANAGER', 'SELLER')
   today() {
     return this.service.today();
   }

@@ -4,7 +4,10 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class CashboxService {
-  constructor(private prisma: PrismaService, private documentSequence: DocumentSequenceService) {}
+  constructor(
+    private prisma: PrismaService,
+    private documentSequence: DocumentSequenceService,
+  ) {}
 
   findAll() {
     return this.prisma.cashBox.findMany({

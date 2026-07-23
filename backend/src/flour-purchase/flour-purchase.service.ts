@@ -4,7 +4,10 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class FlourPurchaseService {
-  constructor(private readonly prisma: PrismaService, private readonly documentSequence: DocumentSequenceService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly documentSequence: DocumentSequenceService,
+  ) {}
 
   async create(data: any) {
     const flour = await this.prisma.ingredient.findFirst({
@@ -36,7 +39,10 @@ export class FlourPurchaseService {
       (data.transportCost || 0) +
       (data.unloadingCost || 0);
 
-    const purchaseNo = await this.documentSequence.next("FLOUR_PURCHASE","FP-");
+    const purchaseNo = await this.documentSequence.next(
+      'FLOUR_PURCHASE',
+      'FP-',
+    );
     const purchase = await this.prisma.flourPurchase.create({
       data: {
         purchaseNo,
