@@ -17,9 +17,15 @@ export default function Login() {
     setSubmitting(true);
     try {
       await login(phone, password);
-      navigate('/');
-    } catch {
-      setError('شماره موبایل یا رمز اشتباه است');
+      navigate('/dashboard');
+    } catch (err: any) {
+      if (!err?.response) {
+        setError('اتصال به سرور برقرار نشد. مطمئن شوید بک‌اند در حال اجراست.');
+      } else if (err.response.status === 401) {
+        setError('شماره موبایل یا رمز اشتباه است');
+      } else {
+        setError('خطایی رخ داد. لطفاً دوباره تلاش کنید.');
+      }
     } finally {
       setSubmitting(false);
     }

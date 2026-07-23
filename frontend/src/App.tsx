@@ -9,9 +9,18 @@ import Products from "./pages/Products";
 import Employees from "./pages/Employees";
 import Users from "./pages/Users";
 import Analytics from "./pages/Analytics";
+import Inventory from "./pages/Inventory";
+import Cashbox from "./pages/Cashbox";
+import Payroll from "./pages/Payroll";
+import FinancialReport from "./pages/FinancialReport";
+import Shifts from "./pages/Shifts";
+import BreadTypes from "./pages/BreadTypes";
+import Nanino from "./pages/Nanino";
+import FlourPurchase from "./pages/FlourPurchase";
+import DoughWeightControl from "./pages/DoughWeightControl";
 import ProtectedRoute from "./auth/ProtectedRoute";
-import { AuthProvider } from "./auth/AuthContext";
 import Layout from "./components/Layout";
+import { AuthProvider } from "./auth/AuthContext";
 
 function Protected({ children }: { children: React.ReactNode }) {
   return (
@@ -30,13 +39,22 @@ const routes: Array<{ path: string; element: React.ReactNode }> = [
   { path: "/employees", element: <Employees /> },
   { path: "/users", element: <Users /> },
   { path: "/analytics", element: <Analytics /> },
+  { path: "/inventory", element: <Inventory /> },
+  { path: "/cashbox", element: <Cashbox /> },
+  { path: "/payroll", element: <Payroll /> },
+  { path: "/financial-report", element: <FinancialReport /> },
+  { path: "/shifts", element: <Shifts /> },
+  { path: "/bread-types", element: <BreadTypes /> },
+  { path: "/nanino", element: <Nanino /> },
+  { path: "/flour-purchase", element: <FlourPurchase /> },
+  { path: "/dough-weight-control", element: <DoughWeightControl /> },
   { path: "/report", element: <Dashboard /> },
 ];
 
 export default function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
           {routes.map((r) => (
@@ -48,7 +66,7 @@ export default function App() {
           ))}
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
