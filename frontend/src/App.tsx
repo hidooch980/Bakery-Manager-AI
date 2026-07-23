@@ -19,6 +19,8 @@ import Nanino from "./pages/Nanino";
 import FlourPurchase from "./pages/FlourPurchase";
 import FlourSale from "./pages/FlourSale";
 import DoughWeightControl from "./pages/DoughWeightControl";
+import CafeMenu from "./pages/CafeMenu";
+import CafeOrders from "./pages/CafeOrders";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import Layout from "./components/Layout";
 import { AuthProvider } from "./auth/AuthContext";
@@ -50,6 +52,8 @@ const routes: Array<{ path: string; element: React.ReactNode }> = [
   { path: "/flour-purchase", element: <FlourPurchase /> },
   { path: "/flour-sale", element: <FlourSale /> },
   { path: "/dough-weight-control", element: <DoughWeightControl /> },
+  { path: "/cafe-menu", element: <CafeMenu /> },
+  { path: "/cafe-orders", element: <CafeOrders /> },
   { path: "/report", element: <Dashboard /> },
 ];
 
