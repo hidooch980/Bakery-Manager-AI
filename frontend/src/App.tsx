@@ -1,42 +1,51 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './auth/AuthContext';
-import { ProtectedRoute } from './auth/ProtectedRoute';
-import { Layout } from './components/Layout';
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-import Sales from './pages/Sales';
-import Production from './pages/Production';
-import Expenses from './pages/Expenses';
-import Products from './pages/Products';
-import Employees from './pages/Employees';
-import Analytics from './pages/Analytics';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Login from "./pages/Login";
+import AdminDashboard from "./pages/AdminDashboard";
+import Dashboard from "./pages/Dashboard";
+import Sales from "./pages/Sales";
+import Production from "./pages/Production";
+import Expenses from "./pages/Expenses";
+import Products from "./pages/Products";
+import Employees from "./pages/Employees";
+import Users from "./pages/Users";
+import Analytics from "./pages/Analytics";
+import ProtectedRoute from "./auth/ProtectedRoute";
+import Layout from "./components/Layout";
 
-function App() {
+function Protected({ children }: { children: React.ReactNode }) {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route
-            element={
-              <ProtectedRoute>
-                <Layout />
-              </ProtectedRoute>
-            }
-          >
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/sales" element={<Sales />} />
-            <Route path="/production" element={<Production />} />
-            <Route path="/expenses" element={<Expenses />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/employees" element={<Employees />} />
-            <Route path="/analytics" element={<Analytics />} />
-          </Route>
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </AuthProvider>
-    </BrowserRouter>
+    <ProtectedRoute>
+      <Layout>{children}</Layout>
+    </ProtectedRoute>
   );
 }
 
-export default App;
+const routes: Array<{ path: string; element: React.ReactNode }> = [
+  { path: "/dashboard", element: <AdminDashboard /> },
+  { path: "/sales", element: <Sales /> },
+  { path: "/production", element: <Production /> },
+  { path: "/expenses", element: <Expenses /> },
+  { path: "/products", element: <Products /> },
+  { path: "/employees", element: <Employees /> },
+  { path: "/users", element: <Users /> },
+  { path: "/analytics", element: <Analytics /> },
+  { path: "/report", element: <Dashboard /> },
+];
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        {routes.map((r) => (
+          <Route
+            key={r.path}
+            path={r.path}
+            element={<Protected>{r.element}</Protected>}
+          />
+        ))}
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}

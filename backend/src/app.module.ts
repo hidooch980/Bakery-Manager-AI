@@ -43,6 +43,7 @@ import { AppVersionModule } from './app-version/app-version.module';
 import { DeviceModule } from './device/device.module';
 import { ProductionStandardsModule } from './production-standards/production-standards.module';
 import { DocumentSequenceModule } from './document-sequence/document-sequence.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -91,7 +92,9 @@ import { DocumentSequenceModule } from './document-sequence/document-sequence.mo
     DeviceModule,
     ProductionStandardsModule,
     DocumentSequenceModule,
+    UsersModule,
   ],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

@@ -39,29 +39,6 @@ class AuthService {
     }
   }
 
-  static Future<bool> register(
-    String name,
-    String phone,
-    String password,
-    String role,
-  ) async {
-    try {
-      final res = await http.post(
-        Uri.parse('${ApiConfig.baseUrl}/auth/register'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'name': name,
-          'phone': phone,
-          'password': password,
-          'role': role,
-        }),
-      );
-      return res.statusCode == 200 || res.statusCode == 201;
-    } catch (_) {
-      return false;
-    }
-  }
-
   static Future<String?> getAccessToken() => StorageService.getAccessToken();
 
   static Future<bool> refresh() async {

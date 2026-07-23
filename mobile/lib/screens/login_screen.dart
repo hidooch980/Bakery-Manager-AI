@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'main_menu_screen.dart';
-import 'register_screen.dart';
 import '../services/auth_service.dart';
 import '../services/api_service.dart';
 
@@ -216,16 +215,6 @@ String appVersion = '';
 
                         ),
 
-                      ),
-
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => const RegisterScreen()),
-                          );
-                        },
-                        child: const Text('ثبت نام کاربر جدید'),
                       ),
 
                     ],
