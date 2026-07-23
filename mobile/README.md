@@ -1,17 +1,30 @@
-# mobile
+# Bakery Manager AI — Mobile
 
-A new Flutter project.
+اپلیکیشن موبایل مدیریت نانوایی با **Flutter** — فروش، تولید، گزارش‌ها، حالت آفلاین و ارسال گزارش به پیام‌رسان بله.
 
-## Getting Started
+## اجرا
 
-This project is a starting point for a Flutter application.
+```bash
+flutter pub get
+flutter run --dart-define=API_BASE_URL=http://10.0.2.2:3000
+```
 
-A few resources to get you started if this is your first Flutter project:
+> روی گوشی واقعی به‌جای `10.0.2.2` از IP کامپیوتر در شبکه استفاده کنید.
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## ساخت APK
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+flutter build apk --release --dart-define=API_BASE_URL=https://YOUR-DOMAIN
+```
+
+خروجی: `build/app/outputs/flutter-apk/app-release.apk`
+
+## ورود آفلاین پیش‌فرض
+
+- شماره موبایل: `09000000000`
+- رمز عبور: `Admin@123`
+
+## نکات انتشار
+
+- برای release واقعی keystore اختصاصی بسازید.
+- برای انتشار عمومی HTTPS فعال و `usesCleartextTraffic` حذف شود.
