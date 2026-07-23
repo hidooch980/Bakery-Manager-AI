@@ -1,36 +1,69 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
+import { Loader2, Lock, Phone } from 'lucide-react';
 
 export default function Login() {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
+    setSubmitting(true);
     try {
       await login(phone, password);
       navigate('/');
     } catch {
       setError('شماره موبایل یا رمز اشتباه است');
+    } finally {
+      setSubmitting(false);
     }
   }
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
-      <form onSubmit={submit} className="card" style={{ width: 320 }}>
-        <h2 style={{ textAlign: 'center' }}>🍞 ورود</h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 20 }}>
-          <input placeholder="شماره موبایل" value={phone} onChange={(e) => setPhone(e.target.value)} />
-          <input placeholder="رمز عبور" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          {error && <div style={{ color: 'var(--danger)' }}>{error}</div>}
-          <button className="btn-primary" type="submit">ورود</button>
+    <div className="login-shell">
+      <div className="login-card">
+        <div className="login-brand">
+          <span className="login-emoji" aria-hidden>🍞</span>
+          <h1>مدیریت نانوایی</h1>
+          <p>برای ادامه، وارد حساب کاربری خود شوید</p>
         </div>
-      </form>
+
+        <form onSubmit={submit} className="login-form">
+          <label className="field">
+            <Phone size={16} />
+            <input
+              placeholder="شماره موبایل"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              autoComplete="username"
+              inputMode="tel"
+            />
+          </label>
+
+          <label className="field">
+            <Lock size={16} />
+            <input
+              placeholder="رمز عبور"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+            />
+          </label>
+
+          {error && <div className="login-error">{error}</div>}
+
+          <button className="btn-primary login-submit" type="submit" disabled={submitting}>
+            {submitting ? <Loader2 size={16} className="spin" /> : 'ورود'}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

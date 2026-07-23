@@ -44,6 +44,7 @@ import { DeviceModule } from './device/device.module';
 import { ProductionStandardsModule } from './production-standards/production-standards.module';
 import { DocumentSequenceModule } from './document-sequence/document-sequence.module';
 import { UsersModule } from './users/users.module';
+import { DoughWeightControlModule } from './dough-weight-control/dough-weight-control.module';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { UsersModule } from './users/users.module';
     ProductionModule,
     IngredientsModule,
     CashboxModule,
+    DoughWeightControlModule,
     ExpensesModule,
     SalesModule,
     ReportsModule,

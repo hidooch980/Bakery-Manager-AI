@@ -11,6 +11,7 @@ import Users from "./pages/Users";
 import Analytics from "./pages/Analytics";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import Layout from "./components/Layout";
+import { AuthProvider } from "./auth/AuthContext";
 
 function Protected({ children }: { children: React.ReactNode }) {
   return (
@@ -35,17 +36,19 @@ const routes: Array<{ path: string; element: React.ReactNode }> = [
 export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        {routes.map((r) => (
-          <Route
-            key={r.path}
-            path={r.path}
-            element={<Protected>{r.element}</Protected>}
-          />
-        ))}
-        <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          {routes.map((r) => (
+            <Route
+              key={r.path}
+              path={r.path}
+              element={<Protected>{r.element}</Protected>}
+            />
+          ))}
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
