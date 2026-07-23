@@ -594,3 +594,64 @@ model DocumentSequence {
   updatedAt   DateTime @updatedAt
 }
 
+model MenuCategory {
+  id        String     @id @default(uuid())
+  name      String
+  sortOrder Int        @default(0)
+  active    Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  items     MenuItem[]
+}
+
+model MenuItem {
+  id         String          @id @default(uuid())
+  name       String
+  price      Float
+  costPrice  Float           @default(0)
+  available  Boolean         @default(true)
+  categoryId String
+  createdAt  DateTime        @default(now())
+  category   MenuCategory    @relation(fields: [categoryId], references: [id])
+  orderItems CafeOrderItem[]
+}
+
+model DiningTable {
+  id        String      @id @default(uuid())
+  name      String
+  capacity  Int         @default(4)
+  active    Boolean     @default(true)
+  createdAt DateTime    @default(now())
+  orders    CafeOrder[]
+}
+
+model CafeOrder {
+  id            String          @id @default(uuid())
+  orderNo       Int             @unique @default(autoincrement())
+  type          String          @default("DINE_IN")
+  status        String          @default("OPEN")
+  tableId       String?
+  customerName  String?
+  note          String?
+  totalAmount   Float           @default(0)
+  discount      Float           @default(0)
+  paymentMethod String?
+  paidAt        DateTime?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  table         DiningTable?    @relation(fields: [tableId], references: [id])
+  items         CafeOrderItem[]
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+model CafeOrderItem {
+  id         String    @id @default(uuid())
+  orderId    String
+  menuItemId String
+  quantity   Int
+  unitPrice  Float
+  createdAt  DateTime  @default(now())
+  order      CafeOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItem   MenuItem  @relation(fields: [menuItemId], references: [id])
+}
