@@ -1,16 +1,10 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'api_service.dart';
 
 class ReportService {
-  static const baseUrl = 'http://185.97.118.255:3000';
+  final _api = ApiService();
 
-  static Future daily() async {
-    final r = await http.get(Uri.parse('$baseUrl/dashboard/daily'));
-
-    if (r.statusCode == 200) {
-      return jsonDecode(r.body);
-    }
-
-    throw Exception('خطا در گزارش');
+  Future<Map<String, dynamic>> getDailyReport() async {
+    final data = await _api.getData('/daily-report');
+    return data as Map<String, dynamic>;
   }
 }

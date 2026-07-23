@@ -1,43 +1,18 @@
 import 'api_service.dart';
 
 class SalesService {
+  final _api = ApiService();
 
-  static final List<Map<String,dynamic>> records = [];
+  Future<List<dynamic>> getAll() async {
+    final data = await _api.getData('/sales');
+    return data as List<dynamic>;
+  }
 
-  static void save({
-    required int bread,
-    required int cash,
-    required int card,
-  }) {
-    records.add({
-      'bread': bread,
-      'cash': cash,
-      'card': card,
-      'total': cash + card,
+  Future<void> create(String productId, int quantity) async {
+    await _api.postData('/sales', {
+      'items': [
+        {'productId': productId, 'quantity': quantity},
+      ],
     });
-  }
-
-  static List<Map<String,dynamic>> getAll() {
-    return records;
-  }
-
-  static Future<bool> createSale({
-    required String productId,
-    required int quantity,
-  }) async {
-
-    final result = await ApiService.postData(
-      'sales',
-      {
-        "items": [
-          {
-            "productId": productId,
-            "quantity": quantity
-          }
-        ]
-      },
-    );
-
-    return result != null;
   }
 }

@@ -1,40 +1,29 @@
-import '../services/github_apk_service.dart';
 import 'package:flutter/material.dart';
 
 class UpdateCard extends StatelessWidget {
-  final bool available;
   final String version;
-  final String apkUrl;
+  final String? notes;
+  final VoidCallback onUpdate;
+
   const UpdateCard({
     super.key,
-    this.available = false,
-    this.version = "",
-    this.apkUrl = "",
+    required this.version,
+    this.notes,
+    required this.onUpdate,
   });
 
   @override
-  Widget build(BuildContext c) {
+  Widget build(BuildContext context) {
     return Card(
+      color: Colors.amber.shade50,
       child: ListTile(
-        leading: Icon(
-          available ? Icons.system_update : Icons.check_circle,
-          color: available ? Colors.orange : Colors.green,
+        leading: const Icon(Icons.system_update, color: Colors.amber),
+        title: Text('نسخه جدید $version موجود است'),
+        subtitle: notes != null ? Text(notes!) : null,
+        trailing: TextButton(
+          onPressed: onUpdate,
+          child: const Text('بروزرسانی'),
         ),
-        title: Text(available ? "نسخه جدید موجود است" : "برنامه بروز است"),
-        subtitle: Text(
-          available ? "نسخه $version آماده دانلود" : "آخرین نسخه نصب شده",
-        ),
-        trailing: available
-            ? ElevatedButton(
-                onPressed: apkUrl.isEmpty
-                    ? null
-                    : () async {
-                        final path = await GithubApkService.download(apkUrl);
-                        if (path != null) {}
-                      },
-                child: const Text("دانلود"),
-              )
-            : null,
       ),
     );
   }

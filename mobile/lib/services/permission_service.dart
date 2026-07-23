@@ -1,21 +1,22 @@
-import 'auth_service.dart';
-
 class PermissionService {
-  static bool canAccess(String page) {
-    final role = AuthService.role().toUpperCase();
+  static const Map<String, List<String>> rolePermissions = {
+    'ADMIN': ['*'],
+    'MANAGER': [
+      'sales',
+      'production',
+      'expenses',
+      'products',
+      'employees',
+      'analytics',
+    ],
+    'SELLER': ['sales'],
+    'DOUGH_MAKER': ['production'],
+    'ACCOUNTANT': ['expenses', 'inventory', 'cashbox'],
+  };
 
-    if (role == 'MANAGER' || role == 'ADMIN') {
-      return true;
-    }
-
-    if (role == 'SELLER' && page == 'sales') {
-      return true;
-    }
-
-    if ((role == 'DOUGH' || role == 'DOUGH_MAKER' || role == 'DIVIDER') && page == 'production') {
-      return true;
-    }
-
-    return false;
+  static bool canAccess(String role, String feature) {
+    final perms = rolePermissions[role];
+    if (perms == null) return false;
+    return perms.contains('*') || perms.contains(feature);
   }
 }

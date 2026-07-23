@@ -1,34 +1,32 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageService {
-  static Future<void> saveToken(String token) async {
-    final prefs = await SharedPreferences.getInstance();
+  static const _accessTokenKey = 'access_token';
+  static const _refreshTokenKey = 'refresh_token';
 
-    await prefs.setString('token', token);
+  Future<void> setAccessToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_accessTokenKey, token);
   }
 
-  static Future<String?> getToken() async {
+  Future<String?> getAccessToken() async {
     final prefs = await SharedPreferences.getInstance();
-
-    return prefs.getString('token');
+    return prefs.getString(_accessTokenKey);
   }
 
-  static Future<void> saveRole(String role) async {
+  Future<void> setRefreshToken(String token) async {
     final prefs = await SharedPreferences.getInstance();
-
-    await prefs.setString('role', role);
+    await prefs.setString(_refreshTokenKey, token);
   }
 
-  static Future<String?> getRole() async {
+  Future<String?> getRefreshToken() async {
     final prefs = await SharedPreferences.getInstance();
-
-    return prefs.getString('role');
+    return prefs.getString(_refreshTokenKey);
   }
 
-  static Future<void> clear() async {
+  Future<void> clear() async {
     final prefs = await SharedPreferences.getInstance();
-
-    await prefs.remove('token');
-    await prefs.remove('role');
+    await prefs.remove(_accessTokenKey);
+    await prefs.remove(_refreshTokenKey);
   }
 }

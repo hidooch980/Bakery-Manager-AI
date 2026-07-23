@@ -1,11 +1,26 @@
-import {Navigate} from "react-router-dom";
-import {useAuth} from "../auth/AuthContext";
+import { type ReactNode } from 'react';
+import { Navigate } from 'react-router-dom';
+import { useAuth } from '../auth/AuthContext';
 
-export default function RouteGuard({children}:any){
- const {user}=useAuth();
+type Props = {
+  children: ReactNode;
+  roles?: string[];
+};
 
- if(!user) return <Navigate to="/"/>;
- if(user.role!=="ADMIN") return <Navigate to="/"/>;
+export function RouteGuard({ children, roles }: Props) {
+  const { user, loading } = useAuth();
 
- return children;
+  if (loading) {
+    return <div style={{ padding: 24 }}>در حال بارگذاری...</div>;
+  }
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (roles && !roles.includes(user.role) && user.role !== 'ADMIN') {
+    return <Navigate to="/" replace />;
+  }
+
+  return <>{children}</>;
 }

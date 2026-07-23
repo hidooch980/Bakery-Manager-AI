@@ -1,19 +1,10 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'api_service.dart';
 
 class ProductionStandardService {
-  static const baseUrl = "http://185.97.118.255:3000";
+  final _api = ApiService();
 
-  static Future<Map<String, dynamic>> getStandard() async {
-    final r = await http.get(Uri.parse("$baseUrl/production-standards"));
-    return jsonDecode(r.body);
-  }
-
-  static Future<void> updateStandard(Map<String, dynamic> data) async {
-    await http.patch(
-      Uri.parse("$baseUrl/production-standards/1"),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(data),
-    );
+  Future<List<dynamic>> getAll() async {
+    final data = await _api.getData('/production-standards');
+    return data as List<dynamic>;
   }
 }

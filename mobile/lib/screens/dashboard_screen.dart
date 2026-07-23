@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../services/dashboard_service.dart';
-import 'daily_chart.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -10,163 +9,60 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-
-  Map<String,dynamic> data = {};
-  bool loading = true;
+  final _service = DashboardService();
+  Map<String, dynamic>? _data;
+  bool _loading = true;
 
   @override
   void initState() {
     super.initState();
-    loadDashboard();
+    _load();
   }
 
-  Future<void> loadDashboard() async {
-    final result = await DashboardService.dashboard();
-
-    if (!mounted) return;
-
-    setState(() {
-      data = result;
-      loading = false;
-    });
+  Future<void> _load() async {
+    try {
+      final data = await _service.getDaily();
+      setState(() {
+        _data = data;
+        _loading = false;
+      });
+    } catch (e) {
+      setState(() => _loading = false);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_loading) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('داشبورد مدیریت نانوایی'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: (){
-              setState(() {
-                loading = true;
-              });
-              loadDashboard();
-            },
-          )
+    if (_data == null) {
+      return const Center(child: Text('خطا در دریافت اطلاعات'));
+    }
+
+    final today = _data!['today'] ?? {};
+
+    return RefreshIndicator(
+      onRefresh: _load,
+      child: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          _buildCard('فروش امروز', today['sales']),
+          _buildCard('هزینه امروز', today['expenses']),
+          _buildCard('سود امروز', today['profit']),
+          _buildCard('تولید امروز', today['production']),
         ],
       ),
-
-      body: loading
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(16),
-
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-
-                children: [
-
-                  const Text(
-                    'خلاصه امروز',
-                    style: TextStyle(
-                      fontSize:24,
-                      fontWeight:FontWeight.bold,
-                    ),
-                  ),
-
-                  const SizedBox(height:20),
-
-                  DailyChart(
-                    sales: double.tryParse('${data['sales'] ?? 0}') ?? 0,
-                    production: double.tryParse('${data['production'] ?? 0}') ?? 0,
-                  ),
-
-                  const SizedBox(height:20),
-
-                  Expanded(
-                    child: GridView.count(
-                      crossAxisCount:2,
-                      crossAxisSpacing:12,
-                      mainAxisSpacing:12,
-
-                      children:[
-
-                        _card(
-                          'فروش امروز',
-                          data['sales'],
-                          Icons.point_of_sale,
-                        ),
-
-                        _card(
-                          'تولید نان',
-                          data['production'],
-                          Icons.bakery_dining,
-                        ),
-
-                        _card(
-                          'موجودی آرد',
-                          data['flour'],
-                          Icons.inventory,
-                        ),
-
-                        _card(
-                          'صندوق',
-                          data['cash'],
-                          Icons.account_balance_wallet,
-                        ),
-
-                        _card(
-                          'هزینه‌ها',
-                          data['expenses'],
-                          Icons.money_off,
-                        ),
-
-                        _card(
-                          'سود امروز',
-                          data['profit'],
-                          Icons.trending_up,
-                        ),
-
-                      ],
-                    ),
-                  )
-
-                ],
-              ),
-            ),
     );
   }
 
-
-  Widget _card(String title,dynamic value,IconData icon){
-
+  Widget _buildCard(String title, dynamic value) {
     return Card(
-      elevation:4,
-
-      child: Column(
-        mainAxisAlignment:MainAxisAlignment.center,
-
-        children:[
-
-          Icon(
-            icon,
-            size:40,
-          ),
-
-          const SizedBox(height:10),
-
-          Text(
-            title,
-            style:const TextStyle(
-              fontSize:17,
-              fontWeight:FontWeight.bold,
-            ),
-          ),
-
-          const SizedBox(height:8),
-
-          Text(
-            '${value ?? 0}',
-            style:const TextStyle(
-              fontSize:24,
-            ),
-          ),
-
-        ],
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        title: Text(title),
+        trailing: Text('${value ?? 0}'),
       ),
     );
   }
