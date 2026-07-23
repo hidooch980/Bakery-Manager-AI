@@ -38,6 +38,7 @@ class _UsersScreenState extends State<UsersScreen> {
   Future<void> loadUsers() async {
     setState(() => loadingList = true);
     final list = await UserManagementService.getUsers();
+    if (!mounted) return;
     setState(() {
       users = list;
       loadingList = false;
@@ -64,18 +65,18 @@ class _UsersScreenState extends State<UsersScreen> {
       role: role,
     );
 
-    setState(() => loading = false);
-
     if (!mounted) return;
+
+    setState(() => loading = false);
 
     if (ok) {
       nameController.clear();
       phoneController.clear();
       passwordController.clear();
       await loadUsers();
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('کاربر با موفقیت ایجاد شد')));
+      if (!mounted) return;
+      final messenger = ScaffoldMessenger.of(context);
+      messenger.showSnackBar(const SnackBar(content: Text('کاربر با موفقیت ایجاد شد')));
     } else {
       setState(() => error = ApiService.lastError.isNotEmpty
           ? ApiService.lastError
@@ -113,7 +114,7 @@ class _UsersScreenState extends State<UsersScreen> {
             ),
             const SizedBox(height: 8),
             DropdownButtonFormField<String>(
-              value: role,
+              initialValue: role,
               decoration: const InputDecoration(labelText: 'نقش'),
               items: roleLabels.entries
                   .map(
