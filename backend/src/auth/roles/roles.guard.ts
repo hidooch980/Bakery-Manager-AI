@@ -1,4 +1,9 @@
-import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  CanActivate,
+  ExecutionContext,
+  ForbiddenException,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
 @Injectable()
@@ -13,7 +18,16 @@ export class RolesGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const user = request.user;
 
-    if (!user || !roles.includes(user.role)) {
+    if (!user) {
+      throw new ForbiddenException('Access denied');
+    }
+
+    // ADMIN همیشه به همه مسیرهای محافظت‌شده با نقش دسترسی دارد
+    if (user.role === 'ADMIN') {
+      return true;
+    }
+
+    if (!roles.includes(user.role)) {
       throw new ForbiddenException('Access denied');
     }
 

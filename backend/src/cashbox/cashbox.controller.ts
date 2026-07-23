@@ -7,13 +7,13 @@ export class CashboxController {
   constructor(private readonly service: CashboxService) {}
 
   @Get()
-  @Roles('MANAGER','ACCOUNTANT')
+  @Roles('MANAGER', 'ACCOUNTANT')
   findAll() {
     return this.service.findAll();
   }
 
   @Post()
-  @Roles('MANAGER','ACCOUNTANT')
+  @Roles('MANAGER', 'ACCOUNTANT')
   create(@Body() data: any) {
     return this.service.create(data);
   }
