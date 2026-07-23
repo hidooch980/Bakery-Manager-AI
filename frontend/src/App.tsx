@@ -10,8 +10,8 @@ import Employees from "./pages/Employees";
 import Users from "./pages/Users";
 import Analytics from "./pages/Analytics";
 import ProtectedRoute from "./auth/ProtectedRoute";
-import Layout from "./components/Layout";
 import { AuthProvider } from "./auth/AuthContext";
+import Layout from "./components/Layout";
 
 function Protected({ children }: { children: React.ReactNode }) {
   return (
@@ -35,8 +35,8 @@ const routes: Array<{ path: string; element: React.ReactNode }> = [
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
+    <AuthProvider>
+      <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
           {routes.map((r) => (
@@ -48,7 +48,7 @@ export default function App() {
           ))}
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
-      </AuthProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
