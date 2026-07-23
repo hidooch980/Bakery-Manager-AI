@@ -1,10 +1,23 @@
 import 'api_service.dart';
 
 class ProductionStandardService {
-  final _api = ApiService();
+  static Future<Map<String, dynamic>> getStandard() async {
+    // از ApiService استفاده می‌شود تا آدرس مرکزی و توکن احراز هویت اعمال شود
+    final result = await ApiService.getData('production-standards');
 
-  Future<List<dynamic>> getAll() async {
-    final data = await _api.getData('/production-standards');
-    return data as List<dynamic>;
+    if (result is Map<String, dynamic>) {
+      return result;
+    }
+    if (result is List && result.isNotEmpty && result.first is Map<String, dynamic>) {
+      return result.first as Map<String, dynamic>;
+    }
+
+    throw Exception(ApiService.lastError.isNotEmpty
+        ? ApiService.lastError
+        : 'خطا در دریافت استاندارد تولید');
+  }
+
+  static Future<void> updateStandard(Map<String, dynamic> data) async {
+    await ApiService.patchData('production-standards/1', data);
   }
 }
